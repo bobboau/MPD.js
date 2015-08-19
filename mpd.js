@@ -119,7 +119,7 @@ function MPD(_port){
                * int -- which song in the current playlist is active
                * actual attribute: song
                */
-              playlist_idx: null,
+              queue_idx: null,
 
 
               /**
@@ -141,7 +141,7 @@ function MPD(_port){
                * int -- which song in the current playlist is active
                * actual attribute: song
                */
-              playlist_idx: null,
+              queue_idx: null,
 
 
               /**
@@ -421,7 +421,7 @@ function MPD(_port){
 
         //normalize some of the event properties because I don't like them the way they are
         event.current_song = {
-            playlist_idx: event.song,
+            queue_idx: event.song,
             elapsed_time: event.elapsed,
             id: event.songid
         };
@@ -437,7 +437,7 @@ function MPD(_port){
         delete event.playlist;
 
         event.next_song = {
-            playlist_idx: event.nextsong,
+            queue_idx: event.nextsong,
             id: event.nextsongid
         };
         delete event.nextsong;
@@ -923,13 +923,13 @@ function MPD(_port){
     /**
      * handler for loading a single playlist
      */
-    function getPlaylistHandler(onDone, playlist_idx){
+    function getPlaylistHandler(onDone, queue_idx){
         return getlistHandler(
             onDone,
             'PlaylistChanged',
             function(list){
                 return {
-                    idx: playlist_idx,
+                    idx: queue_idx,
                     songs: list
                 };
             }
@@ -981,7 +981,7 @@ function MPD(_port){
      * get the current song, or null
      */
     function getCurrentSong(){
-        return getSongOnQueue(MPD.state.current_song.playlist_idx);
+        return getSongOnQueue(MPD.state.current_song.queue_idx);
     }
 
 
@@ -989,7 +989,7 @@ function MPD(_port){
      * get the song next on the queue, or null
      */
     function getNextSong(){
-        return getSongOnQueue(MPD.state.next_song.playlist_idx);
+        return getSongOnQueue(MPD.state.next_song.queue_idx);
     }
 
     /**
@@ -1049,11 +1049,11 @@ function MPD(_port){
         getCurrentSong:getCurrentSong,
         getCurrentSongTime:getCurrentSongTime,
         getCurrentSongID:function(){return MPD.state.current_song.id;},
-        getCurrentSongQueueIndex:function(){return MPD.state.current_song.playlist_idx;},
+        getCurrentSongQueueIndex:function(){return MPD.state.current_song.queue_idx;},
 
         getNextSong:getNextSong,
         getNextSongID:function(){return MPD.state.next_song.id;},
-        getNextSongQueueIndex:function(){return MPD.state.next_song.playlist_idx;},
+        getNextSongQueueIndex:function(){return MPD.state.next_song.queue_idx;},
 
         getQueue:function(){return cloneObject(MPD.state.current_queue);},
         getQueueVersion:function(){return MPD.state.queue_version;},
