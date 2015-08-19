@@ -1,4 +1,4 @@
-MPD.js, the Javascript MPD client library
+MPD.js: the Javascript MPD client library
 =========================================
 
 Intro
