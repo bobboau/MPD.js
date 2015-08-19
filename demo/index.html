@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MPD Client</title>
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <!-- websocket adapter library -->
+    <script src="js/websock/base64.js"></script>
+    <script src="js/websock/util.js"></script>
+    <script src="js/websock/websock.js"></script>
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="../mpd.js"></script>
+    <script src="js/UI.js"></script>
+</head>
+<body>
+    <div class="MPD MPD_client" data-mpd_client_id="0">
+        <table><tr><td>
+            <table>
+                <tr>
+                    <th>connected:</th><td class="MPD_connected"></td>
+                </tr></tr>
+                    <th>volume:</th><td class="MPD_volume"></td>
+                </tr></tr>
+                    <th>title:</th><td class="MPD_cur_song_title"></td>
+                </tr></tr>
+                    <th>time:</th><td><span class="MPD_cur_song_elapsed_time"></span>/<span class="MPD_cur_song_duration"></span></td>
+                </tr></tr>
+                    <th>play state:</th><td class="MPD_playstate"></td>
+                </tr></tr>
+                    <td colspan="2">
+                        <input type="button" value="Play" onclick="UI.play(this)" />
+                        <input type="button" value="Pause" onclick="UI.pause(this)" />
+                        <input type="button" value="Stop" onclick="UI.stop(this)" />
+                        <input type="button" value="Prev" onclick="UI.previous(this)" />
+                        <input type="button" value="Next" onclick="UI.next(this)" />
+                        <input type="button" value="Remove Song" onclick="UI.removeCurrentSong(this);"/>
+                        <input type="button" value="Clear Queue" onclick="UI.clearQueue(this);"/>
+                    </td>
+                </tr></tr>
+                    <td colspan="2">
+                        Volume:<input type="range" class="MPD_volume" onchange="UI.setVolume(this)" min="0" max="100"/>
+                    </td>
+                </tr></tr>
+                    <td colspan="2">
+                        Time:<input type="range" class="MPD_cur_song_elapsed_time" oninput="UI.seek(this)" onchange="UI.seek(this)" min="0" max="0" data-MPD_data_map="cur_song_duration:max"/>
+                    </td>
+                </tr>
+            </table>
+        </td><td>
+            Play Queue<br/>
+            <select multiple class="MPD_cur_song_id" data-MPD_data_map="queue" onclick="UI.playSong(this)"/>
+        </td><td data-mpd_playlist_id=".MPD_playlist_selector">
+            Playlists<br/>
+            <select class="MPD_playlist_selector" data-MPD_data_map="playlists" onchange="UI.selectPlaylist(this)"/>
+            <input type="button" value="Load" onclick="UI.loadPlaylist(this)" />
+            <br/>
+            <select multiple class="MPD_playlist"/>
+        </td><td>
+            Search<br/>
+            <form>
+                <table></table>
+                <input type="button" value="Add Criteria" onclick="UI.addSearchCriteria(this)"/>
+                <br/>
+                <input type="button" value="Search" onclick="UI.doSearch(this)" />
+                <br/>
+                Results:<br/>
+                <select multiple class="MPD_search_results"/><br/>
+                <input type="button" value="Add Selected" onclick="UI.addSelectedSearchResultsToQueue(this);"/>
+                <input type="button" value="Add All" onclick="UI.addAllSearchResultsToQueue(this);"/>
+                <input type="button" value="Replace Queue w Selected" onclick="UI.replaceQueueWithSelectedSearchResults(this);"/>
+                <input type="button" value="Replace Queue" onclick="UI.replaceQueueWithAllSearchResults(this);"/>
+            </form>
+        </td></tr></table>
+    </div>
+</body>
+</html>
