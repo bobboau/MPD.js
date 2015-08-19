@@ -19,6 +19,10 @@ On your server, you need to have a running instance of MPD. Getting MPD running 
 
 That should allow you to make an MPD client instance on port 8800 that works.
 
+You might also find this command helpful for a simple webserver for development purposes
+
+    python -m SimpleHTTPServer
+
 Usage
 -----
 
