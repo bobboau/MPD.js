@@ -1,6 +1,5 @@
-# MPD.js
-MPD client library in Javascript
-================================
+MPD.js, the Javascript MPD client library
+=========================================
 
 Intro
 -----
