@@ -138,6 +138,10 @@ var UI = (function(){
             client.on('PlaylistsChanged',function(){
                 updateElements($('.MPD [data-MPD_data_map="playlists"]'));
             });
+
+            client.on('DataLoaded',function(){
+                $('.MPD_file_list_placeholder').replaceWith(makeFileListElement({directory:'/'}));
+            });
         }
 
         setInterval(function(){
@@ -486,6 +490,74 @@ var UI = (function(){
     }
 
 
+    /**
+     * toggle showing children, if no chilrent populate from the client
+     */
+    function fileListClick(element){
+        var parent = $(element).parents('.MPD_file_list').first();
+        if(parent.length === 0){
+            return;
+        }
+        var children = parent.find('.MPD_file_children').first();
+        if(children.length > 0 && children.children().length == 0){
+            //element hasn't been populated yet
+            populateFileList(parent);
+        }
+        else{
+            children.toggle();
+        }
+    }
+
+    /**
+     * given a filelist element get it's full path
+     */
+    function getFileListPath(element){
+        return $(element).data('mpd_file_path').replace(/\/?(.*)/, '/$1').slice(1,-1);
+    }
+
+    /**
+     * template inflation function
+     */
+    function makeFileListElement(content){
+        if(typeof content.directory !== 'undefined'){
+            var contents = $($('#template_MPD_file_list').html());
+            contents.filter('.MPD_file_list').data('mpd_file_path', content.directory.replace(/(.*[^\/])\/?/, '$1/'));
+            contents.find('.MPD_file_path_name').html(content.directory);
+        }
+        else if(typeof content.file !== 'undefined'){
+            var contents = $($('#template_MPD_file').html());
+            contents.filter('.MPD_file').data('mpd_file_path', content.file.replace(/(.*[^\/])\/?/, '$1/'));
+            contents.find('.MPD_file_title').html(getSongTitle(content));
+            contents.find('.MPD_file_album').html(content.album);
+            contents.find('.MPD_file_artist').html(content.artist);
+            contents.find('.MPD_file_file').html(content.file);
+        }
+
+        return contents;
+    }
+
+
+    /**
+     * fill the given file list element with it's appropriate filey goodness
+     */
+    function populateFileList(element){
+        var path = getFileListPath(element);
+        getClient(element).getDirectoryContents(path, function(directory_contents){
+            directory_contents.forEach(function(content){
+                $(element).find('.MPD_file_children').first().append(makeFileListElement(content));
+            });
+        })
+    }
+
+
+    /**
+     * add a song by it's filename
+     */
+    function addSong(element){
+        getClient(element).addSongToQueueByFile(getFileListPath(element));
+    }
+
+
     return {
         play:play,
         pause:pause,
@@ -506,6 +578,8 @@ var UI = (function(){
         replaceQueueWithSelectedSearchResults:replaceQueueWithSelectedSearchResults,
         replaceQueueWithAllSearchResults:replaceQueueWithAllSearchResults,
         removeCurrentSong:removeCurrentSong,
-        clearQueue:clearQueue
+        clearQueue:clearQueue,
+        fileListClick:fileListClick,
+        addSong:addSong
     };
 })();

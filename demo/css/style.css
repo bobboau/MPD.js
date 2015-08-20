@@ -1,0 +1,9 @@
+.MPD_file_children{
+    margin-left: 10px;
+}
+
+.MPD_file{
+    border-color: black;
+    border-style: solid;
+    margin:10px;
+}

@@ -1,5 +1,15 @@
 /**
- *returns an object representing an MPD web client
+ * Main interface and only global varialbe of the MPD.js library
+ * returns an object representing an MPD web client
+ * All other methods documented here are member functions of the object returned by a call to the MPD function
+ * @example
+ * //retrives a MPD client interface on port 8800
+ * var mpd_client = MPD(8800);
+ * //set handler for when the state changes
+ * mpd_client.on('StateChanged', updateUiFunction);
+ * @param {int} [port_number]
+ * @function MPD
+ * @module
  */
 function MPD(_port){
 
@@ -10,6 +20,7 @@ function MPD(_port){
     var MPD = {
       /**
        * THE web socket that is connected to the MPD server
+       * @private
        */
       socket:null,
 
@@ -24,12 +35,14 @@ function MPD(_port){
        * SongChange
        * Mpdhost
        * Error
+       * @private
        */
       handlers:{},
 
       /**
        * basically the same as above, but private and imutable and it's just a single function
        * called before the external handlers so they can screw with the event if they want
+       * @private
        */
       internal_handlers:{
         onConnect:onConnect,
@@ -43,26 +56,31 @@ function MPD(_port){
       /**
        * number -- int number of milisecond to wait until reconnecting after loosing connection
        * set to something falsyto disable automatic reconnection
+       * @private
        */
       reconnect_time: 3000,
 
       /**
-       *true if we want logging turned on
+       * true if we want logging turned on
+       * @private
        */
       do_logging: true,
 
       /**
-       *our understanding of what the server looks like
+       * our understanding of what the server looks like
+       * @private
        */
       state:{
           /**
            * server protocol version
+           * @private
            */
           version: null,
 
 
           /**
            * boolean -- if we are currently connected to the server or not
+           * @private
            */
           connected:false,
 
@@ -70,36 +88,42 @@ function MPD(_port){
           /**
            * string -- enum, PLAYING, STOPPED, PAUSED
            * actual attribute: state (int 0,1,2)
+           * @private
            */
           playstate: null,
 
 
           /**
            * int -- 0 to 100 the current volume
+           * @private
            */
           volume: null,
 
 
           /**
            * boolean -- true if the server is configured to repeat the current song
+           * @private
            */
           repeat: null,
 
 
           /**
            * boolean -- true if the server is configured to just play one song then quit
+           * @private
            */
           single: null,
 
 
           /**
            * boolean -- true if the server is configured to not repeat songs in a playlist
+           * @private
            */
           consume: null,
 
 
           /**
            * boolean -- true if the server is configured to play music in a random order
+           * @private
            */
           random: null,
 
@@ -107,17 +131,20 @@ function MPD(_port){
           /**
            * float -- not sure what this is, but it's reported
            * actual attribute: mixrampdb
+           * @private
            */
           mix_ramp_threshold: null,
 
 
           /**
            * info about the currently playing song
+           * @private
            */
           current_song: {
               /**
                * int -- which song in the current playlist is active
                * actual attribute: song
+               * @private
                */
               queue_idx: null,
 
@@ -125,6 +152,7 @@ function MPD(_port){
               /**
                * float -- time into the currently playing song in seconds
                * actual attribute: elapsed
+               * @private
                */
               elapsed_time: null,
 
@@ -132,6 +160,7 @@ function MPD(_port){
               /**
                * int -- the id of the current song
                * actual attribute: songid
+               * @private
                */
                id: null
           },
@@ -140,6 +169,7 @@ function MPD(_port){
               /**
                * int -- which song in the current playlist is active
                * actual attribute: song
+               * @private
                */
               queue_idx: null,
 
@@ -147,6 +177,7 @@ function MPD(_port){
               /**
                * int -- the id of the current song
                * actual attribute: songid
+               * @private
                */
                id: null
           },
@@ -162,26 +193,30 @@ function MPD(_port){
            *  pos: int,
            *  title: string
            * }
+           * @private
            */
           current_queue:[],
 
           /**
            * 'version' of the current queue
            * what ever that means
+           * @private
            */
           queue_version: null,
 
           /**
            * list of playlists
            *
+           * @private
            */
           playlists:[]
 
       },
 
       /**
-       *valid tag values
+       * valid tag values
        * null here means it's an open ended tag
+       * @private
        */
       tag_values:{
           any:null,
@@ -201,6 +236,7 @@ function MPD(_port){
 
       /**
        * when was the status last updated
+       * @private
        */
       last_status_update_time: new Date(),
 
@@ -216,6 +252,7 @@ function MPD(_port){
        *
        * understanding this variable is essential for understanding how this package works
        * this is basically a changable behaviour method
+       * @private
        */
       responceProcessor:function(lines){}
     };
@@ -226,6 +263,7 @@ function MPD(_port){
 
     /**
      * logging function
+     * @private
      */
     function log(message){
       if(MPD.do_logging){
@@ -235,6 +273,7 @@ function MPD(_port){
 
     /**
      * wrapper for sending a message to the server, allows logging
+     * @private
      */
     function sendString(str){
         log('sending: "'+str+'"');
@@ -245,6 +284,7 @@ function MPD(_port){
     /**
      * initalization funciton
      * called near the end of this file and when we need to reconnect
+     * @private
      */
     function init(){
       var websocket_url = getAppropriateWsUrl();
@@ -272,6 +312,7 @@ function MPD(_port){
     /**
      * issue a command to the server
      * this assumes we are starting in and wish to return to an idle state
+     * @private
      */
     function issueCommand(command){
         if(!issueCommand.command){
@@ -291,6 +332,7 @@ function MPD(_port){
 
     /**
      * private method that gets the right websocket URL
+     * @private
      */
     function getAppropriateWsUrl()
     {
@@ -326,6 +368,7 @@ function MPD(_port){
 
     /**
      * converts an string to a Date
+     * @private
      */
     function parseDate(source){
         var value = null;
@@ -350,6 +393,7 @@ function MPD(_port){
 
     /**
      * function called when the websocke connects
+     * @private
      */
     function onConnect(){
       log("connected");
@@ -360,6 +404,7 @@ function MPD(_port){
 
     /**
      * called when we disconnected (unexpectedly)
+     * @private
      */
     function onDisconnect(){
       log("disconnected");
@@ -378,6 +423,7 @@ function MPD(_port){
 
     /**
      * the queue changed, this is the new queue
+     * @private
      */
     function onQueueChanged(event){
       MPD.state.current_queue = event;
@@ -389,6 +435,7 @@ function MPD(_port){
      * might be a message,
      * might be a fragment of a message,
      * might be multiple messages
+     * @private
      */
     function onRawData(){
         if(typeof onRawData.buffer === 'undefined'){
@@ -413,6 +460,7 @@ function MPD(_port){
 
     /**
      * the MPD server's state changed in some way
+     * @private
      */
     function onStateChanged(event){
         log('state');
@@ -451,6 +499,7 @@ function MPD(_port){
 
     /**
      * queue has changed, this is the new one
+     * @private
      */
     function onQueue(event){
         MPD.state.current_queue = event;
@@ -459,6 +508,7 @@ function MPD(_port){
 
     /**
      * the list of playlists has changed
+     * @private
      */
     function onPlaylistsChanged(event){
         MPD.state.playlists = event;
@@ -467,6 +517,7 @@ function MPD(_port){
 
     /**
      * the list of playlist has changed
+     * @private
      */
     function onPlaylistChanged(event){
         MPD.state.playlists[event.idx].songs = event.songs;
@@ -475,6 +526,7 @@ function MPD(_port){
 
     /**
      * call all event handlers for the specified event
+     * @private
      */
     function callHandler(event_name, args){
         var handler_name = 'on'+event_name;
@@ -490,7 +542,7 @@ function MPD(_port){
         if(MPD.handlers[handler_name]){
             MPD.handlers[handler_name].forEach(function(func){
                 try{
-                    func(args, MPD.state);
+                    func(args, MPD.state, this);
                 }
                 catch(err){
                     dealWithError(err);
@@ -506,6 +558,7 @@ function MPD(_port){
 
     /**
      * add an event handler
+     * @private
      */
     function on(event_name, handler){
 
@@ -536,6 +589,7 @@ function MPD(_port){
 
     /**
      * we got some sort of error message from the server
+     * @private
      */
     function dealWithError(line){
         debugger;
@@ -547,6 +601,7 @@ function MPD(_port){
     /**
      * return all of the lines upto one that matches the passed line
      * MUTATES lines
+     * @private
      */
     function getLines(lines, last_line){
         var end_line = -1;
@@ -573,6 +628,7 @@ function MPD(_port){
     /**
      * generic responce handler
      * deals with a responce that is a list of some sort of datastructure repeated over and over
+     * @private
      */
     function processListResponce(lines){
         var output = [];
@@ -622,6 +678,7 @@ function MPD(_port){
 
     /**
      * generic handler for loading a list of records in a responce
+     * @private
      */
     function getlistHandler(onDone, event_type, transformFunction){
         return function(lines){
@@ -653,6 +710,7 @@ function MPD(_port){
 
     /**
      * given a change key, return the command that will result in getting the changed data
+     * @private
      */
     function figureOutWhatToReload(change, actions){
         switch(change){
@@ -693,6 +751,7 @@ function MPD(_port){
     /**
      * wait for something to change
      * this is the state we spend most of out time in
+     * @private
      */
     function idleHandler(lines){
         var message_lines = getLines(lines, 'OK');
@@ -771,6 +830,7 @@ function MPD(_port){
 
     /**
      * we are expecting a connection responce
+     * @private
      */
     function handleConnectionMessage(lines){
         if(lines.length < 1){
@@ -785,6 +845,7 @@ function MPD(_port){
 
     /**
      * method name says it all
+     * @private
      */
     function loadEverything(){
         //this loads all of the data from the MPD server we need
@@ -812,6 +873,7 @@ function MPD(_port){
 
     /**
      * reload all playlists
+     * @private
      */
     function loadAllPlaylists(onDone){
         MPD.responceProcessor = getPlaylistsHandler(function(){
@@ -838,6 +900,7 @@ function MPD(_port){
 
     /**
      * reload all valid tag values
+     * @private
      */
     function loadAllTagValues(onDone){
 
@@ -868,6 +931,7 @@ function MPD(_port){
     /**
      * we are expecting a state responce
      * this is what we do when we get it
+     * @private
      */
     function getStateHandler(onDone){
         return function(lines){
@@ -893,6 +957,7 @@ function MPD(_port){
 
     /**
      * handler for the current queue
+     * @private
      */
     function getQueueHandler(onDone, event_type){
         return getlistHandler(onDone, event_type);
@@ -901,6 +966,7 @@ function MPD(_port){
 
     /**
      * handler for the list of playlists
+     * @private
      */
     function getPlaylistsHandler(onDone){
         return getlistHandler(onDone, 'PlaylistsChanged');
@@ -909,6 +975,7 @@ function MPD(_port){
 
     /**
      * handler for the list of playlists
+     * @private
      */
     function getSearchHandler(onDone){
         return getlistHandler(
@@ -921,7 +988,22 @@ function MPD(_port){
 
 
     /**
+     * handler for the list of directories (is exactly the same as the search handler :/ )
+     * @private
+     */
+    function getDirectoryHandler(onDone){
+        return getlistHandler(
+            function(){
+                onDone.apply(null, arguments);
+                MPD.responceProcessor = idleHandler;
+            }
+        );
+    }
+
+
+    /**
      * handler for loading a single playlist
+     * @private
      */
     function getPlaylistHandler(onDone, queue_idx){
         return getlistHandler(
@@ -944,6 +1026,7 @@ function MPD(_port){
 
     /**
      * get the current play time
+     * @private
      */
     function getCurrentSongTime(){
         var current_song = getCurrentSong();
@@ -967,6 +1050,7 @@ function MPD(_port){
 
     /**
      * get the song identified by it's position on the current queue, or null
+     * @private
      */
     function getSongOnQueue(idx){
         var song = null;
@@ -979,6 +1063,7 @@ function MPD(_port){
 
     /**
      * get the current song, or null
+     * @private
      */
     function getCurrentSong(){
         return getSongOnQueue(MPD.state.current_song.queue_idx);
@@ -987,6 +1072,7 @@ function MPD(_port){
 
     /**
      * get the song next on the queue, or null
+     * @private
      */
     function getNextSong(){
         return getSongOnQueue(MPD.state.next_song.queue_idx);
@@ -994,6 +1080,7 @@ function MPD(_port){
 
     /**
      * make a deep copy of the passed object/array/primitive
+     * @private
      */
     function cloneObject(obj){
         return JSON.parse(JSON.stringify(obj));
@@ -1002,6 +1089,7 @@ function MPD(_port){
     /**
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes
      * onDone is a function that should be called on complete, will be passed an array of song objects
+     * @private
      */
     function doSearch(params, onDone){
         var query = 'search';
@@ -1015,10 +1103,24 @@ function MPD(_port){
 
     /**
      * returns a list of valid search tag types
+     * @private
      */
     function getTagTypes(){
         return Object.keys(MPD.tag_values);
     }
+
+
+    /**
+     * Lists all songs and directories in path. also returns song file metadata info
+     * path string -- the uri to the directory you are interested relative to the MPD media directory (blank string for root)
+     * onDone function -- function called with all of the directory info at some point in the future
+     * @private
+     */
+    function getDirectoryContents(path, onDone){
+        idleHandler.postIdle = getDirectoryHandler(onDone);
+        issueCommand('lsinfo "'+path+'"');
+    }
+
 
     /********\
     |* INIT *|
@@ -1029,84 +1131,605 @@ function MPD(_port){
     /********************\
     |* public interface *|
     \********************/
+
+    /**
+     * event handler for 'Error' events
+     * error event hander callback
+     *
+     * @callback errorEventHandler
+     * @param {object} [responce_event] -
+     */
+    /**
+     * generic event hander callback called when any sort of event happens
+     *
+     * @callback eventHandler
+     * @param {object} [responce_event] - {type:<string>:data:<object>} data depends onf type, see the other event handlers
+     */
+    /**
+     * generic event hander callback called when any sort of event happens that doesn't have any handler set for it
+     *
+     * @callback unhandledEventHandler
+     * @param {object} [responce_event] - {type:<string>:data:<object>} data depends onf type, see the other event handlers
+     */
+    /**
+     * event handler for 'DatabaseChanging' events
+     * event hander callback for when the music database has started changing, there will be a DataLoaded event following this (unless something goes HORRIBLY wrong)
+     *
+     * @callback databaseChangingEventHandler
+     * @param {object} [responce_event] -
+     */
+    /**
+     * event handler for 'DataLoaded' events
+     * called when a bulk dataload has completed and the mpd client's data is in a ocnsistent state. fired when a client has finished recovering from a reload which might be caused by a database change or (re)connecting
+     *
+     * @callback dataLoadedEventHandler
+     * @param {object} [responce_event] -
+     */
+    /**
+     * event handler for 'StateChanged' events
+     * called when the state of the player has changed. This can be an scalar value. Things like currently playing song changing, volume, settings (consume, repeat, etc)
+     * NOT called when the current play time changes, because that changes continuusly, you will need to poll that
+     *
+     * @callback stateChangedEventHandler|
+     * @param {object} [responce_event] - state object, the same as is returned by getState
+     */
+    /**
+     * event handler for 'QueueChanged' events
+     * something about the queue of playing songs changed
+     *
+     * @callback queueChangedEventHandler|
+     * @param {array} [songs] - [{song}] array of songs on the queue
+     */
+    /**
+     * event handler for 'PlaylistsChanged' events
+     * some playlist somewhere changed.
+     *
+     * @callback playlistsChangedEventHandler
+     * @param {array} [playlists] - [string] array of names of all playlists. note: there doesn't seem to be a way to get just the changed ones, so you get the list of everything, you can tell if something was added or removed but you have no way of telling if any particular playlist has been changed. this is a limitation of MPD
+     */
+    /**
+     * event handler for 'Connect' events
+     * the client has connected, but no data has yet loaded
+     * you can use this to setup event handlers, or just do that before connecting
+     *
+     * @callback connectEventHandler
+     */
+    /**
+     * event handler for 'Disconnect' events
+     * the client has disconnected
+     *
+     * @callback disconnectEventHandler
+     */
+
     return {
+        /**
+         * adds an event handler
+         * @function on
+         * @param {string} event_name - what sort of event to listen for. must be one of the following:  'Error', 'Event', 'UnhandledEvent', 'DatabaseChanging', 'DataLoaded', 'StateChanged', 'QueueChanged', 'PlaylistsChanged', 'PlaylistChanged','Connect', 'Disconnect'
+         * @param {disconnectEventHandler|connectEventHandler|playlistsChangedEventHandler|queueChangedEventHandler|stateChangedEventHandler|dataLoadedEventHandler|databaseChangingEventHandler|unhandledEventHandler|eventHandler|errorEventHandler} handler - function called when the given event happens
+         */
         on: on,
 
-        getState:               function(){return cloneObject(MPD.state);},
-        disableLogging:         function(){MPD.do_logging = false;},
-        enableLogging:          function(){MPD.do_logging = true;},
-        getPort:                function(){return _port;},
-        getProtocolVersion:     function(){return MPD.state.version;},
-        isConnected:            function(){return MPD.state.connected == true;},
-        getPlaystate:           function(){return MPD.state.playstate;},
-        getVolume:              function(){return MPD.state.volume;},
-        isRepeat:               function(){return MPD.state.repeat == true;},
-        isSingle:               function(){return MPD.state.single == true;},
-        isConsume:              function(){return MPD.state.consume == true;},
-        isRandom:               function(){return MPD.state.random == true;},
-        getMixRampThreashold:   function(){return MPD.state.mix_ramp_threshold;},
+        /**
+         * returns an object representation of the current state of MPD as the client understands it right now
+         * @function
+         */
+        getState: function(){
+                return cloneObject(MPD.state);
+        },
 
+        /**
+         * call to turn off logging to the console
+         * @function
+         */
+        disableLogging: function(){
+                MPD.do_logging = false;
+        },
+
+        /**
+         * call to turn logging to the console on (debugging)
+         * @function
+         */
+        enableLogging: function(){
+                MPD.do_logging = true;
+        },
+
+        /**
+         * return the port number this client was instansiated with and thet it is (attempting to) connect with
+         * @function
+         */
+        getPort: function(){
+                return _port;
+        },
+
+        /**
+         * @function
+         */
+        getProtocolVersion: function(){
+                return MPD.state.version;
+        },
+
+        /**
+         * @function
+         */
+        isConnected: function(){
+                return MPD.state.connected == true;
+        },
+
+        /**
+         * @function
+         */
+        getPlaystate: function(){
+                return MPD.state.playstate;
+        },
+
+        /**
+         * @function
+         */
+        getVolume: function(){
+                return MPD.state.volume;
+        },
+
+        /**
+         * @function
+         */
+        isRepeat: function(){
+                return MPD.state.repeat == true;
+        },
+
+        /**
+         * @function
+         */
+        isSingle: function(){
+                return MPD.state.single == true;
+        },
+
+        /**
+         * @function
+         */
+        isConsume: function(){
+                return MPD.state.consume == true;
+        },
+
+        /**
+         * @function
+         */
+        isRandom: function(){
+                return MPD.state.random == true;
+        },
+
+        /**
+         * @function
+         */
+        getMixRampThreashold: function(){
+                return MPD.state.mix_ramp_threshold;
+        },
+
+
+        /**
+         * @function getCurrentSong
+         */
         getCurrentSong:getCurrentSong,
+
+        /**
+         * @function getCurrentSongTime
+         */
         getCurrentSongTime:getCurrentSongTime,
-        getCurrentSongID:function(){return MPD.state.current_song.id;},
-        getCurrentSongQueueIndex:function(){return MPD.state.current_song.queue_idx;},
 
+        /**
+         * @function
+         */
+        getCurrentSongID: function(){
+                return MPD.state.current_song.id;
+        },
+
+        /**
+         * @function
+         */
+        getCurrentSongQueueIndex: function(){
+                return MPD.state.current_song.queue_idx;
+        },
+
+
+        /**
+         * @function getNextSong
+         */
         getNextSong:getNextSong,
-        getNextSongID:function(){return MPD.state.next_song.id;},
-        getNextSongQueueIndex:function(){return MPD.state.next_song.queue_idx;},
 
-        getQueue:function(){return cloneObject(MPD.state.current_queue);},
-        getQueueVersion:function(){return MPD.state.queue_version;},
+        /**
+         * @function
+         */
+        getNextSongID: function(){
+                return MPD.state.next_song.id;
+        },
 
-        getPlaylists:function(){return cloneObject(MPD.state.playlists);},
-        getPlaylistByName:function(name){var ret = null; MPD.state.playlists.forEach(function(p){if(p.playlist==name)ret = p;}); return ret;},
+        /**
+         * @function
+         */
+        getNextSongQueueIndex: function(){
+                return MPD.state.next_song.queue_idx;
+        },
 
-        setPlayConsume:     function(STATE){issueCommand('consume '+(STATE?1:0));},     // boolean -- Sets consume state to STATE, STATE should be 0 or 1. When consume is activated, each song played is removed from playlist.
-        setPlayCrossfade:   function(SECONDS){issueCommand('crossfade '+SECONDS);},     // float -- Sets crossfading time between songs.
-        setPlayRandom:      function(STATE){issueCommand('random '+(STATE?1:0));},      // boolean -- Sets random state to STATE, STATE should be 0 or 1.
-        setPlayRepeat:      function(STATE){issueCommand('repeat '+(STATE?1:0));},      // boolean -- Sets repeat state to STATE, STATE should be 0 or 1.
-        setPlaySingle:      function(STATE){issueCommand('single '+(STATE?1:0));},      // boolean -- Sets single state to STATE, STATE should be 0 or 1. When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled.
-        setMixRampDb:       function(deciBels){issueCommand('mixrampdb '+deciBels);},   // float -- Sets the threshold at which songs will be overlapped. Like crossfading but doesn't fade the track volume, just overlaps. The songs need to have MixRamp tags added by an external tool. 0dB is the normalized maximum volume so use negative values, I prefer -17dB. In the absence of mixramp tags crossfading will be used. See http:     // sourceforge.net/projects/mixramp
-        setMixRampDelay:    function(SECONDS){issueCommand('mixrampdelay '+SECONDS);},  // float/string -- Additional time subtracted from the overlap calculated by mixrampdb. A value of "nan" disables MixRamp overlapping and falls back to crossfading.
-        setVolume:          function(VOL){issueCommand('setvol '+VOL);},                // float -- Sets volume to VOL, the range of volume is 0-100.
 
-        play:       function(SONGPOS){issueCommand(SONGPOS?('play '+SONGPOS):'play');},                     // int optional -- Begins playing the playlist at song number SONGPOS.
-        playById:   function(SONGID){issueCommand('playid '+SONGID);},                                      // int optional -- Begins playing the playlist at song SONGID.
-        pause:      function(PAUSE){issueCommand('pause '+((PAUSE||typeof PAUSE == 'undefined')?1:0));},    // boolean -- sets pause/resumes playing
-        next:       function(){issueCommand('next');},                                                      // Plays next song in the playlist.
-        previous:   function(){issueCommand('previous');},                                                  // Plays previous song in the playlist.
-        seek:       function(TIME){issueCommand('seekid '+MPD.state.current_song.id+' '+TIME);},                  // float -- Seeks to the position TIME (in seconds; fractions allowed) within the current song. If prefixed by '+' or '-', then the time is relative to the current playing position.
-        stop:       function(){issueCommand('stop');},                                                      // Stops playing.
+        /**
+         * @function
+         */
+        getQueue: function(){
+                return cloneObject(MPD.state.current_queue);
+        },
 
-        addSongToQueueByFile:           function(filename){issueCommand('add "'+filename+'"');},                // string -- Adds the file URI to the playlist (directories add recursively). URI can also be a single file.
-        clearQueue:                     function(){issueCommand('clear');},                                     // Clears the current playlist.
-        removeSongFromQueueByPosition:  function(position){issueCommand('delete '+position);},                  // int -- Deletes a song from the playlist.
-        removeSongsFromQueueByRange:    function(start, end){issueCommand('delete '+start+' '+end);},           // int -- Deletes a range of songs from the playlist.
-        removeSongsFromQueueById:       function(id){issueCommand('deleteid '+id);},                            // int -- Deletes the song SONGID from the playlist
-        moveSongOnQueueByPosition:      function(position, to){issueCommand('move '+position+' '+to);},         // int, int -- Moves the song at FROM or range of songs at START:END to TO in the playlist. [6]
-        moveSongsOnQueueByPosition:     function(start, end, to){issueCommand('move '+start+' '+end+' '+to);},  // int, int, int -- Moves the song at FROM or range of songs at START:END to TO in the playlist. [6]
-        moveSongOnQueueById:            function(id, to){issueCommand('moveid '+id+' '+to);},                   // int, int -- Moves the song with FROM (songid) to TO (playlist index) in the playlist. If TO is negative, it is relative to the current song in the playlist (if there is one).
-        shuffleQueue:                   function(){issueCommand('shuffle');},                                   // Shuffles the current playlist.
-        swapSongsOnQueueByPosition:     function(pos1, pos2){issueCommand('swap '+pos1+' '+pos2);},             // int int -- Swaps the positions of SONG1 and SONG2.
-        swapSongsOnQueueById:           function(id1, id2){issueCommand('swapid '+id1+' '+id2);},               // int int -- Swaps the positions of SONG1 and SONG2 (both song ids).
+        /**
+         * @function
+         */
+        getQueueVersion: function(){
+                return MPD.state.queue_version;
+        },
 
-        loadPlaylistIntoQueue:          function(playlist_name){issueCommand('load "'+playlist_name+'"');},  // string -- Loads the playlist into the current queue. Playlist plugins are supported.
-        saveQueueToPlaylist:            function(playlist_name){issueCommand('save "'+playlist_name+'"');},  // string -- Saves the current playlist to NAME.m3u in the playlist directory.
 
-        addSongToPlaylistByFilename:    function(playlist_name, filename){issueCommand('playlistadd "'+playlist_name+'" "'+filename+'"');},         // string, string -- Adds URI to the playlist NAME.m3u. NAME.m3u will be created if it does not exist.
-        clearPlaylist:                  function(playlist_name){issueCommand('playlistclear "'+playlist_name+'"');},                                // string -- Clears the playlist NAME.m3u.
-        removeSongFromPlaylist:         function(playlist_name, position){issueCommand('playlistdelete "'+playlist_name+'" '+position);},           // string, int -- Deletes SONGPOS from the playlist NAME.m3u.
-        moveSongOnPlaylistById:         function(playlist_name, id, position){issueCommand('playlistmove "'+playlist_name+'" '+id+' '+position);},  // string, int, int -- Moves SONGID in the playlist NAME.m3u to the position SONGPOS.
-        renamePlaylist:                 function(playlist_name, new_name){issueCommand('rename "'+playlist_name+'" "'+new_name+'"');},              // string, string -- Renames the playlist NAME.m3u to NEW_NAME.m3u.
-        deletePlaylist:                 function(playlist_name){issueCommand('rm "'+playlist_name+'"');},                                           // string -- Removes the playlist NAME.m3u from the playlist directory.
+        /**
+         * @function
+         */
+        getPlaylists: function(){
+                return cloneObject(MPD.state.playlists);
+        },
 
-        updateDatabase:                 function(){issueCommand('update');},     //Updates the music database: find new files, remove deleted files, update modified files.
+        /**
+         * @function
+         */
+        getPlaylistByName: function(name){
+                var ret = null; MPD.state.playlists.forEach(function(p){if(p.playlist==name)ret = p;}); return ret;
+        },
 
-        //TODO:
-        //listallinfo(directory, onComplete) //string optional -- Lists all songs and directories in URI. also returns metadata info in the same format as listplaylists.
 
-        getTagTypes:                    getTagTypes,    //return an array of strings which are all of the valid tags
-        getTagOptions:                  function(tag){return MPD.tag_values[tag]?MPD.tag_values[tag]:null;}, //return an array of strings which are all of the values the passed tag is allowed to have, or null if the tag is unconstrained
-        search:                         doSearch        //params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
+        /**
+         * Sets consume state to STATE, STATE should be 0 or 1. When consume is activated, each song played is removed from playlist.
+         * @function
+         * @param {boolean}
+         */
+        setPlayConsume: function(STATE){
+                issueCommand('consume '+(STATE?1:0));
+        },
+
+        /**
+         * Sets crossfading time between songs.
+         * @function
+         * @param {float}
+         */
+        setPlayCrossfade: function(SECONDS){
+                issueCommand('crossfade '+SECONDS);
+        },
+
+        /**
+         * Sets random state to STATE, STATE should be 0 or 1.
+         * @function
+         * @param {boolean}
+         */
+        setPlayRandom: function(STATE){
+                issueCommand('random '+(STATE?1:0));
+        },
+
+        /**
+         * Sets repeat state to STATE, STATE should be 0 or 1.
+         * @function
+         * @param {boolean}
+         */
+        setPlayRepeat: function(STATE){
+                issueCommand('repeat '+(STATE?1:0));
+        },
+
+        /**
+         * Sets single state to STATE, STATE should be 0 or 1. When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled.
+         * @function
+         * @param {boolean}
+         */
+        setPlaySingle: function(STATE){
+                issueCommand('single '+(STATE?1:0));
+        },
+
+        /**
+         * Sets the threshold at which songs will be overlapped. Like crossfading but doesn't fade the track volume, just overlaps. The songs need to have MixRamp tags added by an external tool. 0dB is the normalized maximum volume so use negative values, I prefer -17dB. In the absence of mixramp tags crossfading will be used. See http:     // sourceforge.net/projects/mixramp
+         * @function
+         * @param {float}
+         */
+        setMixRampDb: function(deciBels){
+                issueCommand('mixrampdb '+deciBels);
+        },
+
+        /**
+         * Additional time subtracted from the overlap calculated by mixrampdb. A value of "nan" disables MixRamp overlapping and falls back to crossfading.
+         * @function
+         * @param {float/string}
+         */
+        setMixRampDelay: function(SECONDS){
+                issueCommand('mixrampdelay '+SECONDS);
+        },
+
+        /**
+         * Sets volume to VOL, the range of volume is 0-100.
+         * @function
+         * @param {float}
+         */
+        setVolume: function(VOL){
+                issueCommand('setvol '+VOL);
+        },
+
+        /**
+         * Begins playing the playlist at song number SONGPOS.
+         * @function
+         * @param {int} [queue_position=<current song>]
+         */
+        play: function(queue_position){
+                issueCommand(SONGPOS?('play '+queue_position):'play');
+        },
+
+        /**
+         * Begins playing the playlist at song SONGID.
+         * @function
+         * @param {int} [song_id=<current song>]
+         */
+        playById: function(song_id){
+                issueCommand('playid '+song_id);
+        },
+
+        /**
+         * sets pause/resumes playing
+         * @function
+         * @param {boolean}
+         */
+        pause: function(PAUSE){
+                issueCommand('pause '+((PAUSE||typeof PAUSE == 'undefined')?1:0));
+        },
+
+        /**
+         * Plays next song in the playlist.
+         * @function
+         */
+        next: function(){
+                issueCommand('next');
+        },
+
+        /**
+         * Plays previous song in the playlist.
+         * @function
+         */
+        previous: function(){
+                issueCommand('previous');
+        },
+
+        /**
+         * Seeks to the position TIME (in seconds; fractions allowed) within the current song. If prefixed by '+' or '-', then the time is relative to the current playing position.
+         * @function
+         * @param {float}
+         */
+        seek: function(TIME){
+                issueCommand('seekid '+MPD.state.current_song.id+' '+TIME);
+        },
+
+        /**
+         * Stops playing.
+         * @function
+         */
+        stop: function(){
+                issueCommand('stop');
+        },
+
+        /**
+         * Adds the file URI to the playlist (directories add recursively). URI can also be a single file.
+         * @function
+         * @param {string}
+         */
+        addSongToQueueByFile: function(filename){
+                issueCommand('add "'+filename+'"');
+        },
+
+        /**
+         * Clears the current playlist.
+         * @function
+         */
+        clearQueue: function(){
+                issueCommand('clear');
+        },
+
+        /**
+         * Deletes a song from the playlist.
+         * @function
+         * @param {int}
+         */
+        removeSongFromQueueByPosition: function(position){
+                issueCommand('delete '+position);
+        },
+
+        /**
+         * Deletes a range of songs from the playlist.
+         * @function
+         * @param {int}
+         */
+        removeSongsFromQueueByRange: function(start, end){
+                issueCommand('delete '+start+' '+end);
+        },
+
+        /**
+         * Deletes the song SONGID from the playlist
+         * @function
+         * @param {int}
+         */
+        removeSongsFromQueueById: function(id){
+                issueCommand('deleteid '+id);
+        },
+
+        /**
+         * Moves the song at FROM or range of songs at START:END to TO in the playlist. [6]
+         * @function
+         * @param {int}
+         * @param {int}
+         */
+        moveSongOnQueueByPosition: function(position, to){
+                issueCommand('move '+position+' '+to);
+        },
+
+        /**
+         * Moves the song at FROM or range of songs at START:END to TO in the playlist. [6]
+         * @function
+         * @param {int}
+         * @param {int}
+         * @param {int}
+         */
+        moveSongsOnQueueByPosition: function(start, end, to){
+                issueCommand('move '+start+' '+end+' '+to);
+        },
+
+        /**
+         * Moves the song with FROM (songid) to TO (playlist index) in the playlist. If TO is negative, it is relative to the current song in the playlist (if there is one).
+         * @function
+         * @param {int}
+         * @param {int}
+         */
+        moveSongOnQueueById: function(id, to){
+                issueCommand('moveid '+id+' '+to);
+        },
+
+        /**
+         * Shuffles the current playlist.
+         * @function
+         */
+        shuffleQueue: function(){
+                issueCommand('shuffle');
+        },
+
+        /**
+         * Swaps the positions of SONG1 and SONG2.
+         * @function
+         * @param {int}
+         * @param {int}
+         */
+        swapSongsOnQueueByPosition: function(pos1, pos2){
+                issueCommand('swap '+pos1+' '+pos2);
+        },
+
+        /**
+         * Swaps the positions of SONG1 and SONG2 (both song ids).
+         * @function
+         * @param {int}
+         * @param {int}
+         */
+        swapSongsOnQueueById: function(id1, id2){
+                issueCommand('swapid '+id1+' '+id2);
+        },
+
+        /**
+         * Loads the playlist into the current queue. Playlist plugins are supported.
+         * @function
+         * @param {string}
+         */
+        loadPlaylistIntoQueue: function(playlist_name){
+                issueCommand('load "'+playlist_name+'"');
+        },
+
+        /**
+         * Saves the current playlist to NAME.m3u in the playlist directory.
+         * @function
+         * @param {string}
+         */
+        saveQueueToPlaylist: function(playlist_name){
+                issueCommand('save "'+playlist_name+'"');
+        },
+
+        /**
+         * Adds URI to the playlist NAME.m3u. NAME.m3u will be created if it does not exist.
+         * @function
+         * @param {string}
+         * @param {string}
+         */
+        addSongToPlaylistByFilename: function(playlist_name, filename){
+                issueCommand('playlistadd "'+playlist_name+'" "'+filename+'"');
+        },
+
+        /**
+         * Clears the playlist NAME.m3u.
+         * @function
+         * @param {string}
+         */
+        clearPlaylist: function(playlist_name){
+                issueCommand('playlistclear "'+playlist_name+'"');
+        },
+
+        /**
+         * Deletes SONGPOS from the playlist NAME.m3u.
+         * @function
+         * @param {string}
+         * @param {int}
+         */
+        removeSongFromPlaylist: function(playlist_name, position){
+                issueCommand('playlistdelete "'+playlist_name+'" '+position);
+        },
+
+        /**
+         * Moves SONGID in the playlist NAME.m3u to the position SONGPOS.
+         * @function
+         * @param {string}
+         * @param {int}
+         * @param {int}
+         */
+        moveSongOnPlaylistById: function(playlist_name, id, position){
+                issueCommand('playlistmove "'+playlist_name+'" '+id+' '+position);
+        },
+
+        /**
+         * Renames the playlist NAME.m3u to NEW_NAME.m3u.
+         * @function
+         * @param {string}
+         * @param {string}
+         */
+        renamePlaylist: function(playlist_name, new_name){
+                issueCommand('rename "'+playlist_name+'" "'+new_name+'"');
+        },
+
+        /**
+         * Removes the playlist NAME.m3u from the playlist directory.
+         * @function
+         * @param {string}
+         */
+        deletePlaylist: function(playlist_name){
+                issueCommand('rm "'+playlist_name+'"');
+        },
+
+        /**
+         * Updates the music database: find new files, remove deleted files, update modified files.
+         * @function
+         */
+        updateDatabase: function(){
+                issueCommand('update');
+        },
+
+        /**
+         * Lists all songs and directories in path (blank string for root). also returns song file metadata info
+         * @callback directoryContentsCallback
+         * @param {array} [directory_contents] - the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived [{directory:<string>,last_modified:<Date>}|song]
+         *
+         * @function getDirectoryContents
+         * @param {string} [path] - path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')
+         * @param {directoryContentsCallback}
+         */
+        getDirectoryContents:getDirectoryContents,
+
+        /**
+         * return an array of strings which are all of the valid tags
+         * @function getTagTypes
+         */
+        getTagTypes: getTagTypes,
+
+        /**
+         * return an array of strings which are all of the values the passed tag is allowed to have, or null if the tag is unconstrained
+         * @function
+         */
+        getTagOptions: function(tag){
+                return MPD.tag_values[tag]?MPD.tag_values[tag]:null;
+        },
+
+        /**
+         * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
+         * @function search
+         */
+        search: doSearch
     };
 };
