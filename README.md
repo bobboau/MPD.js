@@ -26,6 +26,8 @@ You might also find this command helpful for a simple webserver for development 
 Usage
 -----
 
+[For full API documentation click here](http://bobboau.github.io/MPD.js/doc/index.html)
+
 Using MPD.js should be the easy part of your soon to be MPD enabled application. The lifecycle begins by making a MPD client instance.
 
     var mpd_client = MPD(8800);
