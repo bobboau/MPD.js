@@ -1,7 +1,8 @@
 /**
- * Main interface and only global varialbe of the MPD.js library
- * returns an object representing an MPD web client
- * All other methods documented here are member functions of the object returned by a call to the MPD function
+ * Main interface and only global varialbe of the MPD.js library.
+ * This function returns an object representing an MPD web client.
+ * All other methods documented here are member functions of the object returned by a call to the MPD function.
+ *
  * @example
  * //retrives a MPD client interface on port 8800
  * var mpd_client = MPD(8800);

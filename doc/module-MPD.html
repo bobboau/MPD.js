@@ -38,8 +38,9 @@
     <div class="container-overview">
     
         
-            <div class="description">Main interface and only global varialbe of the MPD.js library
-returns an object representing an MPD web client</div>
+            <div class="description">Main interface and only global varialbe of the MPD.js library.
+This function returns an object representing an MPD web client.
+All other methods documented here are member functions of the object returned by a call to the MPD function.</div>
         
 
         
@@ -172,6 +173,14 @@ returns an object representing an MPD web client</div>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//retrives a MPD client interface on port 8800
+var mpd_client = MPD(8800);
+//set handler for when the state changes
+mpd_client.on('StateChanged', updateUiFunction);</code></pre>
 
 
 
@@ -316,7 +325,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1637">line 1637</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1644">line 1644</a>
     </li></ul></dd>
     
 
@@ -443,7 +452,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1515">line 1515</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1522">line 1522</a>
     </li></ul></dd>
     
 
@@ -570,7 +579,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1646">line 1646</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1653">line 1653</a>
     </li></ul></dd>
     
 
@@ -652,7 +661,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1523">line 1523</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1530">line 1530</a>
     </li></ul></dd>
     
 
@@ -779,7 +788,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1686">line 1686</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1693">line 1693</a>
     </li></ul></dd>
     
 
@@ -861,7 +870,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1219">line 1219</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1226">line 1226</a>
     </li></ul></dd>
     
 
@@ -943,7 +952,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1227">line 1227</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1234">line 1234</a>
     </li></ul></dd>
     
 
@@ -1021,7 +1030,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1303">line 1303</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1310">line 1310</a>
     </li></ul></dd>
     
 
@@ -1099,7 +1108,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1316">line 1316</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1323">line 1323</a>
     </li></ul></dd>
     
 
@@ -1177,7 +1186,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1323">line 1323</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1330">line 1330</a>
     </li></ul></dd>
     
 
@@ -1255,7 +1264,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1308">line 1308</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1315">line 1315</a>
     </li></ul></dd>
     
 
@@ -1286,7 +1295,7 @@ returns an object representing an MPD web client</div>
 
     
 
-    <h4 class="name" id="~getDirectoryContents"><span class="type-signature">(inner) </span>getDirectoryContents<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~getDirectoryContents"><span class="type-signature">(inner) </span>getDirectoryContents<span class="signature">(directory_contents<span class="signature-attributes">opt</span>, path<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1311,9 +1320,13 @@ returns an object representing an MPD web client</div>
     <thead>
     <tr>
         
+        <th>Name</th>
+        
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -1327,6 +1340,41 @@ returns an object representing an MPD web client</div>
 
         <tr>
             
+                <td class="name"><code>directory_contents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived [{directory:<string>,last_modified:<Date>}|song]</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
 
             <td class="type">
             
@@ -1338,26 +1386,46 @@ returns an object representing an MPD web client</div>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')</td>
         </tr>
 
     
 
         <tr>
             
+                <td class="name"><code></code></td>
+            
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">directoryContentsCallback</span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -1403,7 +1471,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1698">line 1698</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1705">line 1705</a>
     </li></ul></dd>
     
 
@@ -1481,7 +1549,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1298">line 1298</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1305">line 1305</a>
     </li></ul></dd>
     
 
@@ -1559,7 +1627,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1328">line 1328</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1335">line 1335</a>
     </li></ul></dd>
     
 
@@ -1637,7 +1705,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1336">line 1336</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1343">line 1343</a>
     </li></ul></dd>
     
 
@@ -1715,7 +1783,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1343">line 1343</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1350">line 1350</a>
     </li></ul></dd>
     
 
@@ -1793,7 +1861,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1373">line 1373</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1380">line 1380</a>
     </li></ul></dd>
     
 
@@ -1871,7 +1939,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1366">line 1366</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1373">line 1373</a>
     </li></ul></dd>
     
 
@@ -1949,7 +2017,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1256">line 1256</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1263">line 1263</a>
     </li></ul></dd>
     
 
@@ -2031,7 +2099,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1235">line 1235</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1242">line 1242</a>
     </li></ul></dd>
     
 
@@ -2109,7 +2177,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1242">line 1242</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1249">line 1249</a>
     </li></ul></dd>
     
 
@@ -2187,7 +2255,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1351">line 1351</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1358">line 1358</a>
     </li></ul></dd>
     
 
@@ -2265,7 +2333,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1358">line 1358</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1365">line 1365</a>
     </li></ul></dd>
     
 
@@ -2347,7 +2415,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1211">line 1211</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1218">line 1218</a>
     </li></ul></dd>
     
 
@@ -2429,7 +2497,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1716">line 1716</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1726">line 1726</a>
     </li></ul></dd>
     
 
@@ -2511,7 +2579,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1706">line 1706</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1716">line 1716</a>
     </li></ul></dd>
     
 
@@ -2589,7 +2657,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1263">line 1263</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1270">line 1270</a>
     </li></ul></dd>
     
 
@@ -2667,7 +2735,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1249">line 1249</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1256">line 1256</a>
     </li></ul></dd>
     
 
@@ -2745,7 +2813,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1284">line 1284</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1291">line 1291</a>
     </li></ul></dd>
     
 
@@ -2823,7 +2891,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1291">line 1291</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1298">line 1298</a>
     </li></ul></dd>
     
 
@@ -2901,7 +2969,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1270">line 1270</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1277">line 1277</a>
     </li></ul></dd>
     
 
@@ -2979,7 +3047,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1277">line 1277</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1284">line 1284</a>
     </li></ul></dd>
     
 
@@ -3106,7 +3174,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1618">line 1618</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1625">line 1625</a>
     </li></ul></dd>
     
 
@@ -3275,7 +3343,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1667">line 1667</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1674">line 1674</a>
     </li></ul></dd>
     
 
@@ -3423,7 +3491,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1581">line 1581</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1588">line 1588</a>
     </li></ul></dd>
     
 
@@ -3571,7 +3639,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1560">line 1560</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1567">line 1567</a>
     </li></ul></dd>
     
 
@@ -3740,7 +3808,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1571">line 1571</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1578">line 1578</a>
     </li></ul></dd>
     
 
@@ -3822,7 +3890,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1481">line 1481</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1488">line 1488</a>
     </li></ul></dd>
     
 
@@ -4003,7 +4071,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1199">line 1199</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1206">line 1206</a>
     </li></ul></dd>
     
 
@@ -4130,7 +4198,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1473">line 1473</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1480">line 1480</a>
     </li></ul></dd>
     
 
@@ -4281,7 +4349,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1455">line 1455</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1462">line 1462</a>
     </li></ul></dd>
     
 
@@ -4432,7 +4500,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1464">line 1464</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1471">line 1471</a>
     </li></ul></dd>
     
 
@@ -4514,7 +4582,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1489">line 1489</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1496">line 1496</a>
     </li></ul></dd>
     
 
@@ -4662,7 +4730,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1656">line 1656</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1663">line 1663</a>
     </li></ul></dd>
     
 
@@ -4789,7 +4857,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1532">line 1532</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1539">line 1539</a>
     </li></ul></dd>
     
 
@@ -4916,7 +4984,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1550">line 1550</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1557">line 1557</a>
     </li></ul></dd>
     
 
@@ -5043,7 +5111,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1541">line 1541</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1548">line 1548</a>
     </li></ul></dd>
     
 
@@ -5191,7 +5259,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1677">line 1677</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1684">line 1684</a>
     </li></ul></dd>
     
 
@@ -5318,7 +5386,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1627">line 1627</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1634">line 1634</a>
     </li></ul></dd>
     
 
@@ -5400,7 +5468,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1720">line 1720</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1730">line 1730</a>
     </li></ul></dd>
     
 
@@ -5527,7 +5595,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1498">line 1498</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1505">line 1505</a>
     </li></ul></dd>
     
 
@@ -5654,7 +5722,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1428">line 1428</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1435">line 1435</a>
     </li></ul></dd>
     
 
@@ -5781,7 +5849,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1437">line 1437</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1444">line 1444</a>
     </li></ul></dd>
     
 
@@ -5908,7 +5976,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1383">line 1383</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1390">line 1390</a>
     </li></ul></dd>
     
 
@@ -6035,7 +6103,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1392">line 1392</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1399">line 1399</a>
     </li></ul></dd>
     
 
@@ -6162,7 +6230,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1401">line 1401</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1408">line 1408</a>
     </li></ul></dd>
     
 
@@ -6289,7 +6357,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1410">line 1410</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1417">line 1417</a>
     </li></ul></dd>
     
 
@@ -6416,7 +6484,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1419">line 1419</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1426">line 1426</a>
     </li></ul></dd>
     
 
@@ -6543,7 +6611,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1446">line 1446</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1453">line 1453</a>
     </li></ul></dd>
     
 
@@ -6625,7 +6693,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1589">line 1589</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1596">line 1596</a>
     </li></ul></dd>
     
 
@@ -6707,7 +6775,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1506">line 1506</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1513">line 1513</a>
     </li></ul></dd>
     
 
@@ -6855,7 +6923,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1609">line 1609</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1616">line 1616</a>
     </li></ul></dd>
     
 
@@ -7003,7 +7071,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1599">line 1599</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1606">line 1606</a>
     </li></ul></dd>
     
 
@@ -7085,7 +7153,7 @@ returns an object representing an MPD web client</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1694">line 1694</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1701">line 1701</a>
     </li></ul></dd>
     
 
@@ -7175,7 +7243,7 @@ you can use this to setup event handlers, or just do that before connecting
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1184">line 1184</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1191">line 1191</a>
     </li></ul></dd>
     
 
@@ -7319,7 +7387,7 @@ event hander callback for when the music database has started changing, there wi
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1148">line 1148</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1155">line 1155</a>
     </li></ul></dd>
     
 
@@ -7463,7 +7531,7 @@ called when a bulk dataload has completed and the mpd client's data is in a ocns
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1155">line 1155</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1162">line 1162</a>
     </li></ul></dd>
     
 
@@ -7546,7 +7614,7 @@ the client has disconnected
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1191">line 1191</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1198">line 1198</a>
     </li></ul></dd>
     
 
@@ -7690,7 +7758,7 @@ error event hander callback
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1129">line 1129</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1136">line 1136</a>
     </li></ul></dd>
     
 
@@ -7833,7 +7901,7 @@ error event hander callback
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1136">line 1136</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1143">line 1143</a>
     </li></ul></dd>
     
 
@@ -7977,7 +8045,7 @@ some playlist somewhere changed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1177">line 1177</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1184">line 1184</a>
     </li></ul></dd>
     
 
@@ -8121,7 +8189,7 @@ something about the queue of playing songs changed
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1170">line 1170</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1177">line 1177</a>
     </li></ul></dd>
     
 
@@ -8266,7 +8334,7 @@ NOT called when the current play time changes, because that changes continuusly,
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1162">line 1162</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1169">line 1169</a>
     </li></ul></dd>
     
 
@@ -8409,7 +8477,7 @@ NOT called when the current play time changes, because that changes continuusly,
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1142">line 1142</a>
+        <a href="mpd.js.html">mpd.js</a>, <a href="mpd.js.html#line1149">line 1149</a>
     </li></ul></dd>
     
 
@@ -8455,7 +8523,7 @@ NOT called when the current play time changes, because that changes continuusly,
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Wed Aug 19 2015 21:43:27 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Aug 20 2015 01:07:08 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
