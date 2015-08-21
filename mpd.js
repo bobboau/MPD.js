@@ -580,10 +580,10 @@ function MPD(_port){
      * deals with a responce that is a list of some sort of datastructure repeated over and over
      * @private
      */
-    function processListResponce(lines){
+    function processListResponce(lines, new_file_marker){
         var output = [];
         var current_thing = null;
-        var starting_key = null; //the key that starts off an object
+        var file_marker = null
         //so, we get an undiferentiated stream of key/value pairs
         lines.forEach(function(line){
             if(!current_thing){
@@ -604,15 +604,20 @@ function MPD(_port){
             key = key.replace(/[^\w\d]+/g, '_');
 
             //we are starting a new object
-            if(key === starting_key){
+            if(file_marker && key.match(file_marker)){
                 output.push(current_thing);
                 current_thing = {};
             }
             current_thing[key] = value;
 
             //we want to skip the first, starting key so this is down here
-            if(starting_key === null){
-                starting_key = key;
+            if(file_marker === null){
+                if(new_file_marker){
+                    file_marker = new_file_marker;
+                }
+                else{
+                    file_marker = new RegExp('^'+key+'$');
+                }
             }
 
         });
@@ -630,7 +635,7 @@ function MPD(_port){
      * generic handler for loading a list of records in a responce
      * @private
      */
-    function getlistHandler(onDone, event_type, transformFunction){
+    function getlistHandler(onDone, event_type, new_file_marker, transformFunction){
         return function(lines){
             var message_lines = getLines(lines, 'OK');
             if(message_lines === null){
@@ -638,7 +643,7 @@ function MPD(_port){
             }
             message_lines.pop();//get rid of the 'OK' line
             if(message_lines.length > 0){
-                var list = processListResponce(message_lines);
+                var list = processListResponce(message_lines, new_file_marker);
                 //optional transformation function
                 if(transformFunction){
                     list = transformFunction(list);
@@ -946,7 +951,9 @@ function MPD(_port){
             function(){
                 onDone.apply(null, arguments);
                 MPD.responceProcessor = idleHandler;
-            }
+            },
+            null,
+            /^file$|^directory$/
         );
     }
 
@@ -959,6 +966,7 @@ function MPD(_port){
         return getlistHandler(
             onDone,
             'PlaylistChanged',
+            null,
             function(list){
                 return {
                     idx: queue_idx,
@@ -1183,7 +1191,7 @@ function MPD(_port){
         /**
          * adds an event handler
          * @function on
-         * @throws {Exception} if you try to listen to an invalid event type
+         * @throws {Error} an Error if you try to listen to an invalid event type
          * @param {String} event_name - what sort of event to listen for. must be one of the following:  'Error', 'Event', 'UnhandledEvent', 'DatabaseChanging', 'DataLoaded', 'StateChanged', 'QueueChanged', 'PlaylistsChanged', 'PlaylistChanged','Connect', 'Disconnect'
          * @param {disconnectEventHandler|connectEventHandler|playlistsChangedEventHandler|queueChangedEventHandler|stateChangedEventHandler|dataLoadedEventHandler|databaseChangingEventHandler|unhandledEventHandler|eventHandler|errorEventHandler} handler - function called when the given event happens
          */
@@ -1192,7 +1200,7 @@ function MPD(_port){
         /**
          * returns an object representation of the current state of MPD as the client understands it right now
          * @function
-         * @returns {state}
+         * @returns {state} object representing the current state of MPD
          */
         getState: function(){
             return cloneObject(MPD.state);
@@ -1217,7 +1225,7 @@ function MPD(_port){
         /**
          * return the port number this client was instansiated with and thet it is (attempting to) connect with
          * @function
-         * @returns {int}
+         * @returns {int} the port number the MPD client is (trying to be) connected to
          */
         getPort: function(){
             return _port;
@@ -1226,7 +1234,7 @@ function MPD(_port){
         /**
          * gets the protocol versing reported on connection
          * @function
-         * @returns {String}
+         * @returns {String} string desxriping the protocol version i.e. "1.18.0"
          */
         getProtocolVersion: function(){
             return MPD.state.version;
@@ -1514,7 +1522,7 @@ function MPD(_port){
         setVolume: function(volume){
             volume = Math.min(1,volume);
             volume = Math.max(0,volume);
-            issueCommand('setvol '+volume*100);
+            issueCommand('setvol '+Math.round(volume*100));
         },
 
         /**
