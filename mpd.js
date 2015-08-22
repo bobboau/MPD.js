@@ -1,5 +1,5 @@
 /**
- * The global MPD function is the main interface and only global varialbe of the _private.js library.
+ * The global MPD function is the main interface and only global varialbe of the MPD.js library.
  * This function returns an object representing an MPD web client.
  * All other methods documented here are member functions of the object returned by a call to the MPD function.
  *
