@@ -36,11 +36,21 @@ function MPD(_port){
 
     /**
      * returns an object representation of the current state of MPD as the client understands it right now
+     * this does NOT map to the client's functional API
      * @instance
      * @returns {state} object representing the current state of MPD
      */
     self.getState = function(){
-        return cloneObject(_private.state);
+        var ret = cloneObject(_private.state);
+        //there are a few things we can't easily clone, but I made a clone method for those, so we can deal with this
+        ret.current_queue = _private.state.current_queue.clone();
+
+        ret.playlists = [];
+        _private.state.playlists.forEach(function(playlist){
+            ret.playlists.push(playlist.clone());
+        });
+
+        return ret;
     };
 
     /**
@@ -1886,6 +1896,15 @@ MPD.Song = function(client, source){
          return source.disk;
      };
 
+     /**
+      * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+      * @instance
+      * @returns {Song}
+      */
+     me.clone = function(){
+         return MPD.Song(client, source);
+     };
+
      return me;
      /**
       * Object representation of a song. This is a direct translation of the data that MPD returns, if MPD does not think a particular
@@ -1938,6 +1957,15 @@ MPD.QueueSong = function(client, source){
         return source.id;
     };
 
+    /**
+     * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+     * @instance
+     * @returns {QueueSong}
+     */
+    me.clone = function(){
+        return MPD.QueueSong(client, source);
+    };
+
     return me;
 }
 
@@ -1983,6 +2011,15 @@ MPD.Directory = function(client, source){
     };
 
     return me;
+
+    /**
+     * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+     * @instance
+     * @returns {Directory}
+     */
+    me.clone = function(){
+        return MPD.Directory(client, source);
+    };
 
     /**
      * metadata returned about a directory from MPD
@@ -2055,6 +2092,15 @@ MPD.Songlist = function(client, source){
          return source.songs;
      };
 
+     /**
+      * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+      * @instance
+      * @returns {Songlist}
+      */
+     me.clone = function(){
+         return MPD.Songlist(client, source);
+     };
+
      return me;
  }
 
@@ -2085,12 +2131,20 @@ MPD.Playlist = function(client, source){
     /**
      * return the name of this playlist
      * @instance
-     * @abstract
      * @returns {String}
      */
     me.getName = function(){
         return source.playlist;
     }
+
+    /**
+     * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+     * @instance
+     * @returns {Playlist}
+     */
+    me.clone = function(){
+        return MPD.Playlist(client, source);
+    };
 
     return me;
 }
@@ -2116,6 +2170,15 @@ MPD.Queue = function(client, source){
    };
    me.moveSongByPosition = function(position, to){
        client.moveSongOnQueueByPosition(position, to);
+   };
+
+   /**
+    * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
+    * @instance
+    * @returns {Queue}
+    */
+   me.clone = function(){
+       return MPD.Queue(client, source);
    };
 
    return me;
