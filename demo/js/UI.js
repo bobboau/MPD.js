@@ -54,7 +54,7 @@ var UI = (function(){
             return Math.round(getClient(element).getCurrentSongTime()*10)/10;
         },
         cur_song_file:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getFilename();
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getPath();
         },
         cur_song_title:function(element){
             var song = getClient(element).getCurrentSong(); return (!song)?'':song.getDisplayName();
@@ -81,7 +81,7 @@ var UI = (function(){
             var song = getClient(element).getNextSong(); return (!song)?'':song.getDuration();
         },
         next_song_file:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getFilename();
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getPath();
         },
         next_song_title:function(element){
             var song = getClient(element).getNextSong(); return (!song)?'':song.getDisplayName();
@@ -154,7 +154,9 @@ var UI = (function(){
             });
 
             client.on('DataLoaded',function(){
-                $('.MPD_file_list_placeholder').replaceWith(makeFileListElement({directory:'/'}));
+                var element = $('.MPD_file_list_placeholder');
+                var client = getClient(element);
+                element.replaceWith(makeFileListElement(MPD.Directory(client, {directory:'/', last_modified:new Date()})));
             });
         }
 
@@ -406,7 +408,7 @@ var UI = (function(){
        getClient(element).search(params, function(results){
            var options_code = '';
            results.forEach(function(option){
-               options_code += '<option value="'+option.getFilename()+'">'+option.getDisplayName()+'</option>';
+               options_code += '<option value="'+option.getPath()+'">'+option.getDisplayName()+'</option>';
            });
            $(element).parents('form').find('.MPD_search_results').html(options_code);
        });
@@ -515,18 +517,18 @@ var UI = (function(){
      * template inflation function
      */
     function makeFileListElement(content){
-        if(typeof content.directory !== 'undefined'){
+        if(typeof content.getMetadata().directory !== 'undefined'){
             var contents = $($('#template_MPD_file_list').html());
-            contents.filter('.MPD_file_list').data('mpd_file_path', content.directory.replace(/(.*[^\/])\/?/, '$1/'));
-            contents.find('.MPD_file_path_name').html(content.directory);
+            contents.filter('.MPD_file_list').data('mpd_file_path', content.getPath().replace(/(.*[^\/])\/?/, '$1/'));
+            contents.find('.MPD_file_path_name').html(content.getPath());
         }
-        else if(typeof content.getFilename !== 'undefined'){
+        else{
             var contents = $($('#template_MPD_file').html());
-            contents.filter('.MPD_file').data('mpd_file_path', content.getFilename().replace(/(.*[^\/])\/?/, '$1/'));
+            contents.filter('.MPD_file').data('mpd_file_path', content.getPath().replace(/(.*[^\/])\/?/, '$1/'));
             contents.find('.MPD_file_title').html(content.getDisplayName());
             contents.find('.MPD_file_album').html(content.getAlbum());
             contents.find('.MPD_file_artist').html(content.getArtist());
-            contents.find('.MPD_file_file').html(content.getFilename());
+            contents.find('.MPD_file_file').html(content.getPath());
         }
 
         return contents;

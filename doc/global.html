@@ -27,14 +27,14 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li>
+					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="Directory.html">Directory</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html">Global</a></li>
+					<li><a href="global.html">directoryContentsCallback</a></li><li><a href="global.html">searchResultsCallback</a></li><li><a href="global.html">searchCountCallback</a></li>
 				</ul>
 			</li>
 			
@@ -127,12 +127,10 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
+        <h3 class="subsection-title">Methods</h3>
 
         <dl>
-                
+            
 <hr>
 <dt>
     <h4 class="name" id="directoryContentsCallback"><span class="type-signature"></span>directoryContentsCallback<span class="signature">(<span class="optional">directory_contents</span>, <span class="optional">path</span>)</span><span class="type-signature"></span></h4>
@@ -315,7 +313,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-637">line 637</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-641">line 641</a>
 			</li>
 		</ul>
 	</dd>
@@ -344,8 +342,8 @@
     
 </dd>
 
+        
             
-                
 <hr>
 <dt>
     <h4 class="name" id="searchResultsCallback"><span class="type-signature"></span>searchResultsCallback<span class="signature">(search_results, params, onDone)</span><span class="type-signature"></span></h4>
@@ -499,7 +497,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-665">line 665</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-671">line 671</a>
 			</li>
 		</ul>
 	</dd>
@@ -528,8 +526,8 @@
     
 </dd>
 
+        
             
-                
 <hr>
 <dt>
     <h4 class="name" id="searchCountCallback"><span class="type-signature"></span>searchCountCallback<span class="signature">(search_result_count, params, onDone)</span><span class="type-signature"></span></h4>
@@ -683,7 +681,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-677">line 677</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-684">line 684</a>
 			</li>
 		</ul>
 	</dd>
@@ -712,7 +710,13 @@
     
 </dd>
 
-            
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
                 
 <hr>
 <dt class="name" id="state">
@@ -1291,7 +1295,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-742">line 742</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-750">line 750</a>
 			</li>
 		</ul>
 	</dd>
@@ -1733,7 +1737,152 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1882">line 1882</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1890">line 1890</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="directory_metadata">
+    <h4>directory_metadata</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>metadata returned about a directory from MPD</p>
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+	
+
+	<h5 class="subsection-title">Properties:</h5>
+
+	<dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>directory</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>file path relative to MPD's music folders</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>last_modified</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>last time this directory was modified</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1987">line 1987</a>
 			</li>
 		</ul>
 	</dd>
@@ -1870,7 +2019,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2065">line 2065</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2124">line 2124</a>
 			</li>
 		</ul>
 	</dd>
@@ -2019,7 +2168,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2073">line 2073</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2132">line 2132</a>
 			</li>
 		</ul>
 	</dd>
@@ -2168,7 +2317,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2080">line 2080</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2139">line 2139</a>
 			</li>
 		</ul>
 	</dd>
@@ -2317,7 +2466,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2087">line 2087</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2146">line 2146</a>
 			</li>
 		</ul>
 	</dd>
@@ -2466,7 +2615,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2095">line 2095</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2154">line 2154</a>
 			</li>
 		</ul>
 	</dd>
@@ -2615,7 +2764,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2103">line 2103</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2162">line 2162</a>
 			</li>
 		</ul>
 	</dd>
@@ -2764,7 +2913,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2112">line 2112</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2171">line 2171</a>
 			</li>
 		</ul>
 	</dd>
@@ -2913,7 +3062,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2120">line 2120</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2179">line 2179</a>
 			</li>
 		</ul>
 	</dd>
@@ -3001,7 +3150,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2128">line 2128</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2187">line 2187</a>
 			</li>
 		</ul>
 	</dd>
@@ -3089,7 +3238,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2136">line 2136</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2195">line 2195</a>
 			</li>
 		</ul>
 	</dd>

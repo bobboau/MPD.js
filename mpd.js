@@ -27,6 +27,7 @@ function MPD(_port){
     /**
      * adds an event handler
      * @instance
+     * @function
      * @throws {Error} an Error if you try to listen to an invalid event type
      * @param {String} event_name - what sort of event to listen for. must be one of the following:  'Error', 'Event', 'UnhandledEvent', 'DatabaseChanging', 'DataLoaded', 'StateChanged', 'QueueChanged', 'PlaylistsChanged', 'PlaylistChanged','Connect', 'Disconnect'
      * @param {disconnectEventHandler|connectEventHandler|playlistsChangedEventHandler|queueChangedEventHandler|stateChangedEventHandler|dataLoadedEventHandler|databaseChangingEventHandler|unhandledEventHandler|eventHandler|errorEventHandler} handler - function called when the given event happens
@@ -152,6 +153,7 @@ function MPD(_port){
     /**
      * gets the currently playing song
      * @instance
+     * @function
      * @returns {Song}
      */
     self.getCurrentSong = getCurrentSong;
@@ -159,6 +161,7 @@ function MPD(_port){
     /**
      * gets the time of the current song. will calculate it based on the reported time, and how long it's been since that happened
      * @instance
+     * @function
      * @returns {Float}
      */
     self.getCurrentSongTime = getCurrentSongTime;
@@ -185,6 +188,7 @@ function MPD(_port){
     /**
      * gets the song next to be played
      * @instance
+     * @function
      * @returns {Song}
      */
     self.getNextSong =getNextSong;
@@ -640,6 +644,7 @@ function MPD(_port){
      * @param {directory[]} [directory_contents] - the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived
      *
      * @instance
+     * @function
      * @param {String} [path] - path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')
      * @param {directoryContentsCallback}
      */
@@ -648,6 +653,7 @@ function MPD(_port){
     /**
      * return an array of strings which are all of the valid tags
      * @instance
+     * @function
      * @returns {String[]}
      */
     self.getTagTypes = getTagTypes;
@@ -669,6 +675,7 @@ function MPD(_port){
      *
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
      * @instance
+     * @function
      * @param {Object} params - object that maps a tag type to a tag value that you want to find matches for {tag<string> => value<string>}
      * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
@@ -682,6 +689,7 @@ function MPD(_port){
      * like search except just for finding how many results you'll get (for faster live updates while criteria are edited)
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce
      * @instance
+     * @function
      * @param {Object} params - object that maps a tag type to a tag value that you want to find matches for {tag<string> => value<string>}
      * @param {searchCountCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
@@ -1604,7 +1612,7 @@ function MPD(_port){
                         return MPD.Song(self,file);
                     }
                     else{
-                        return file;
+                        return MPD.Directory(self,file);
                     }
                 });
             }
@@ -1802,7 +1810,7 @@ MPD.Song = function(client, source){
       * @instance
       * @returns {String} the full path to the music file in MPD's music directory. relative path.
       */
-     me.getFilename = function(){
+     me.getPath = function(){
          return source.file;
      };
 
@@ -1931,6 +1939,57 @@ MPD.QueueSong = function(client, source){
     };
 
     return me;
+}
+
+/**
+ * Object representation of a directory. Directories are representations of folders that contain other folders and songs, they
+ * map to directories on the MPD server's machine. This appears to be a fairly stable structure returned by MPD.
+ * I could see an argument in favor of a common ancesstor with Song, because everything in this class has a direct analog in Song.
+ * @class Directory
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {directory_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.Directory = function(client, source){
+     /**
+      * @lends Songlist
+      */
+    var me = {};
+
+    /**
+     * get the MPD reported metadata, raw
+     * @instance
+     * @returns {directory_metadata} gets the all of the raw metadata MPD provided
+     */
+    me.getMetadata = function(){
+        return JSON.parse(JSON.stringify(source));
+    };
+
+    /**
+     * get the path to (including) this directory. relative to the MPD server's media root
+     * @instance
+     * @returns {String} path to this directory. relative to the MPD server's media root
+     */
+    me.getPath = function(){
+        return source.directory;
+    }
+
+    /**
+     * when was the directory last altered
+     * @instance
+     * @returns {Date} when the song file last altered
+     */
+    me.getLastModified = function(){
+        return source.last_modified;
+    };
+
+    return me;
+
+    /**
+     * metadata returned about a directory from MPD
+     * @typedef directory_metadata
+     * @property {String} directory - file path relative to MPD's music folders
+     * @property {Date} last_modified - last time this directory was modified
+     */
 }
 
 /**

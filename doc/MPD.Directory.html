@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>MPD.js Index</title>
+	<title>MPD.js Class: Directory</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,14 +27,14 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="Directory.html">Directory</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li>
+					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li><li><a href="MPD.Directory.html">MPD.Directory</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html">directoryContentsCallback</a></li><li><a href="global.html">searchResultsCallback</a></li><li><a href="global.html">searchCountCallback</a></li>
+					<li><a href="global.html">Global</a></li>
 				</ul>
 			</li>
 			
@@ -53,28 +53,205 @@
 		<div id="main">
 			
 
+<section>
+
+<header>
     
+        <h2>
+            <span class="ancestors"><a href="MPD.html">MPD</a>.</span>
+        
+        Directory
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="Directory"><span class="type-signature"></span>new Directory<span class="signature">(client, source)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Object representation of a directory. Directories are representations of folders that contain other folders and songs, they<br>map to directories on the MPD server's machine. This appears to be a fairly stable structure returned by MPD.<br>I could see an argument in favor of a common ancesstor with Song, because everything in this class has a direct analog in Song.</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MPD.html">MPD</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the MPD client object that owns this</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#directory_metadata">directory_metadata</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>raw metadata javascript object that contains the MPD reported data for this song</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
-
-
-
-
-
-
-
-
-    
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1944">line 1944</a>
+			</li>
+		</ul>
+	</dd>
 	
 
+	
 
+	
 
+	
+</dl>
 
+    
+    
 
+    
 
+    
 
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
