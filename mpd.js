@@ -10,7 +10,7 @@
  * //set handler for when the state changes
  * mpd_client.on('StateChanged', updateUiFunction);
  * @class
- * @param {Integer} [port_number]
+ * @param {Integer} [port_number] - the portnumber our client should try to cennect to our winsockifyed MPD instance with
  */
 function MPD(_port){
 
