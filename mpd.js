@@ -1950,7 +1950,7 @@ MPD.Song = function(client, source){
   */
 MPD.QueueSong = function(client, source){
     /**
-     * @lends Song
+     * @lends QueueSong
      */
     var me = MPD.Song(client, source);
 
