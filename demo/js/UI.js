@@ -33,73 +33,87 @@ var UI = (function(){
             return getClient(element).isRandom();
         },
         cur_song_album:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.album:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getAlbum();
         },
         cur_song_artist:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.artist:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getArtist();
         },
         cur_song_id:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.id:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getId();
         },
         cur_song_last_modified:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.last_modified:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getLastModified();
         },
         cur_song_pos:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.pos:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getQueuePosition();
         },
         cur_song_duration:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.time:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getDuration();
         },
         cur_song_elapsed_time:function(element){
             return Math.round(getClient(element).getCurrentSongTime()*10)/10;
         },
         cur_song_file:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.file:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getFilename();
         },
         cur_song_title:function(element){
-            var song = getClient(element).getCurrentSong(); return getSongTitle(song);
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getDisplayName();
         },
         cur_song_track:function(element){
-            var song = getClient(element).getCurrentSong(); return song?song.track:'';
+            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getTrack();
         },
         next_song_album:function(element){
-            var song = getClient(element).getNextSong(); return song?song.album:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getAlbum();
         },
         next_song_artist:function(element){
-            var song = getClient(element).getNextSong(); return song?song.artist:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getArtist();
         },
         next_song_id:function(element){
-            var song = getClient(element).getNextSong(); return song?song.id:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getId();
         },
         next_song_last_modified:function(element){
-            var song = getClient(element).getNextSong(); return song?song.last_modified:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getLastModified();
         },
         next_song_pos:function(element){
-            var song = getClient(element).getNextSong(); return song?song.pos:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getQueuePosition();
         },
         next_song_duration:function(element){
-            var song = getClient(element).getNextSong(); return song?song.time:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getDuration();
         },
         next_song_file:function(element){
-            var song = getClient(element).getNextSong(); return song?song.file:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getFilename();
         },
         next_song_title:function(element){
-            var song = getClient(element).getNextSong(); return getSongTitle(song);
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getDisplayName();
         },
         next_song_track:function(element){
-            var song = getClient(element).getNextSong(); return song?song.track:'';
+            var song = getClient(element).getNextSong(); return (!song)?'':song.getTrack();
         },
         queue:function(element){
-            return getClient(element).getQueue().map(function(song){return {key:song.id,value:getSongTitle(song)};});
+            return getClient(element).getQueue().getSongs().map(function(song){
+                return {
+                    key:song.getId(),
+                    value:song.getDisplayName()
+                };
+            });
         },
         playlists:function(element){
-            return [{key:'',value:'Load Playlist'}].concat(getClient(element).getPlaylists().map(function(playlist, idx){return {key:playlist.playlist,value:playlist.playlist};}));
+            return [{key:'',value:'Load Playlist'}].concat(
+                getClient(element).getPlaylists().map(function(playlist, idx){
+                    return {
+                        key:playlist.getName(),
+                        value:playlist.getName()
+                    };
+                })
+            );
         },
         playlist:function(element){
             var playlist_id = getDeferedInt(element,'mpd_playlist_id');
             var playlist = getClient(element).getPlaylistByName(playlist_id);
             if(playlist){
-                return playlist.songs.map(function(song){return getSongTitle(song);});
+                return playlist.getSongs().map(function(song){
+                    return song.getDisplayName();
+                });
             }
             else{
                 return [];
@@ -153,24 +167,6 @@ var UI = (function(){
     /*******************\
     |* private methods *|
     \*******************/
-
-
-    /**
-     * given a song, return what we want it's main UI text to be
-     */
-    function getSongTitle(song){
-        if(song){
-            if(song.title){
-                return song.title;
-            }
-            else{
-                return song.file;
-            }
-        }
-        else{
-            return '';
-        }
-    }
 
 
     /**
@@ -410,7 +406,7 @@ var UI = (function(){
        getClient(element).search(params, function(results){
            var options_code = '';
            results.forEach(function(option){
-               options_code += '<option value="'+option.file+'">'+getSongTitle(option)+'</option>';
+               options_code += '<option value="'+option.getFilename()+'">'+option.getDisplayName()+'</option>';
            });
            $(element).parents('form').find('.MPD_search_results').html(options_code);
        });
@@ -524,13 +520,13 @@ var UI = (function(){
             contents.filter('.MPD_file_list').data('mpd_file_path', content.directory.replace(/(.*[^\/])\/?/, '$1/'));
             contents.find('.MPD_file_path_name').html(content.directory);
         }
-        else if(typeof content.file !== 'undefined'){
+        else if(typeof content.getFilename !== 'undefined'){
             var contents = $($('#template_MPD_file').html());
-            contents.filter('.MPD_file').data('mpd_file_path', content.file.replace(/(.*[^\/])\/?/, '$1/'));
-            contents.find('.MPD_file_title').html(getSongTitle(content));
-            contents.find('.MPD_file_album').html(content.album);
-            contents.find('.MPD_file_artist').html(content.artist);
-            contents.find('.MPD_file_file').html(content.file);
+            contents.filter('.MPD_file').data('mpd_file_path', content.getFilename().replace(/(.*[^\/])\/?/, '$1/'));
+            contents.find('.MPD_file_title').html(content.getDisplayName());
+            contents.find('.MPD_file_album').html(content.getAlbum());
+            contents.find('.MPD_file_artist').html(content.getArtist());
+            contents.find('.MPD_file_file').html(content.getFilename());
         }
 
         return contents;
