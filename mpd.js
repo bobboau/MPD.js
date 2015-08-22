@@ -1897,6 +1897,21 @@ MPD.Song = function(client, source){
      };
 
      /**
+      * if this song is on the Queue, get the QueueSong
+      * @instance
+      * @returns {QueueSong}
+      */
+     me.getQueueSong = function(){
+        var queue = client.getQueue().getSongs();
+        for(var i = 0; i<queue.length; i++){
+            if(queue[i].getPath() === me.getPath()){
+                return queue[i];
+            }
+        }
+        return null;
+     };
+
+     /**
       * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
       * @instance
       * @returns {Song}
@@ -1958,8 +1973,27 @@ MPD.QueueSong = function(client, source){
     };
 
     /**
+     * play this song
+     * @instance
+     */
+    me.play = function(){
+        return client.playSongById(me.getId());
+    };
+
+    /**
+     * overrideing this becaue we already are a QueueSong
+     * @instance
+     * @override
+     * @returns {QueueSong}
+     */
+    me.getQueueSong = function(){
+       return me;
+    };
+
+    /**
      * return a copy of this object. the point of this is to return an object that the used cannot use to mutate this one, but that has the exact same behaviour
      * @instance
+     * @override
      * @returns {QueueSong}
      */
     me.clone = function(){
