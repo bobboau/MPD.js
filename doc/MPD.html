@@ -34,7 +34,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html">directoryContentsCallback</a></li><li><a href="global.html">searchResultsCallback</a></li><li><a href="global.html">searchCountCallback</a></li>
+					<li><a href="global.html">directoryContentsCallback</a></li>
 				</ul>
 			</li>
 			
@@ -8249,7 +8249,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
     
     
     <div class="description">
-        <p>return an array of strings which are all of the valid tags</p>
+        <p>return an array of strings which are all of the valid tags<br>note there might be more undocumented tags that you can use just fine not listed here (like musicbrainz)</p>
     </div>
     
 
@@ -8296,7 +8296,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-669">line 669</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-670">line 670</a>
 			</li>
 		</ul>
 	</dd>
@@ -8348,7 +8348,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
             
 <hr>
 <dt>
-    <h4 class="name" id="getTagOptions"><span class="type-signature"></span>getTagOptions<span class="signature">(tag)</span><span class="type-signature"> &rarr; {Array.&lt;String>|null}</span></h4>
+    <h4 class="name" id="tagSearch"><span class="type-signature"></span>tagSearch<span class="signature">(params, onDone)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -8356,7 +8356,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
     
     
     <div class="description">
-        <p>return an array of strings which are all of the values the passed tag is allowed to have, or null if the tag is unconstrained</p>
+        <p>params is a {tag<string> =&gt; value<string>} object, valid tags are enumerated in getTagTypes.<br>onDone is a function that should be called on complete, will be passed an array of strings that are the values of the tag identified by tag_type that are on songs that match the search critaria</p>
     </div>
     
 
@@ -8391,13 +8391,13 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 
         <tr>
             
-                <td class="name"><code>tag</code></td>
+                <td class="name"><code>params</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array.&lt;Object></span>
 
 
             
@@ -8407,7 +8407,30 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 
             
 
-            <td class="description last"><p>the tag you want to know the possible values for</p></td>
+            <td class="description last"><p>Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> =&gt; value<string>}. For a list of acceptable tag/keys @see getTagTypes. For a list of acceptable values for a given tag @see getTagOptions.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>onDone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#searchResultsCallback">searchResultsCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>function called when the search results have come back, is passed the results as it's only parameter</p></td>
         </tr>
 
 	
@@ -8452,7 +8475,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-677">line 677</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-692">line 692</a>
 			</li>
 		</ul>
 	</dd>
@@ -8477,28 +8500,339 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
     
     
     
-    <h5>Returns:</h5>
     
-            
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">client.tagSearch(
+    &#x27;album&#x27;,
+    {artist:&#x27;bearsuit&#x27;},
+    function(albums){
+       //albums == [&quot;Cat Spectacular&quot;, &quot;Team Pingpong&quot;, &quot;OH:IO&quot;, &quot;The Phantom Forest&quot;]
+       //which are all of the albums of the band Bearsuit
+    }
+);</pre>
 
 
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;String></span>
-|
-
-<span class="param-type">null</span>
-
-
-	</dd>
-</dl>
-
+    
+</dd>
 
         
+            
+<hr>
+<dt>
+    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(params, onDone)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>params is a {tag<string> =&gt; value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> =&gt; value<string>}. For a list of acceptable tag/keys @see getTagTypes. For a list of acceptable values for a given tag @see getTagOptions.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>onDone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#searchResultsCallback">searchResultsCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>function called when the search results have come back, is passed the results as it's only parameter</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-709">line 709</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="searchCount"><span class="type-signature"></span>searchCount<span class="signature">(params, onDone)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>like search except just for finding how many results you'll get (for faster live updates while criteria are edited)<br>params is a {tag<string> =&gt; value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> =&gt; value<string>} For a list of acceptable tag/keys @see getTagTypes. For a list of acceptable values for a given tag @see getTagOptions.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>onDone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#searchCountCallback">searchCountCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>function called when the search results have come back, is passed the results as it's only parameter</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-719">line 719</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
     
     
 </dd>

@@ -662,45 +662,58 @@ function MPD(_port){
 
     /**
      * return an array of strings which are all of the valid tags
+     * note there might be more undocumented tags that you can use just fine not listed here (like musicbrainz)
      * @instance
      * @function
      * @returns {String[]}
      */
-    self.getTagTypes = getTagTypes;
+    self.getTagTypes = function getTagTypes(){
+        return   ['any','artist','album','albumartist','title','track','name','genre','date','composer','performer','comment','disc'];
 
-    /**
-     * return an array of strings which are all of the values the passed tag is allowed to have, or null if the tag is unconstrained
-     * @instance
-     * @param {String} tag - the tag you want to know the possible values for
-     * @returns {(String[] | null)}
-     */
-    self.getTagOptions = function(tag){
-        return _private.tag_values[tag]?_private.tag_values[tag]:null;
     };
 
     /**
-     * is given search results when the search is complete
-     * @callback searchResultsCallback
-     * @param {song[]} search_results - all of the songs that match the tag values you asked for
+     * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes.
+     * onDone is a function that should be called on complete, will be passed an array of strings that are the values of the tag identified by tag_type that are on songs that match the search critaria
      *
+     * @example
+     * client.tagSearch(
+     *     'album',
+     *     {artist:'bearsuit'},
+     *     function(albums){
+     *        //albums == ["Cat Spectacular", "Team Pingpong", "OH:IO", "The Phantom Forest"]
+     *        //which are all of the albums of the band Bearsuit
+     *     }
+     * );
+     * @instance
+     * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => value<string>}. For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
+     * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
+     */
+    self.tagSearch = function doTagSearch(tag_type, params, onDone){
+       var query = 'list '+tag_type;
+       for(key in params){
+           var value = params[key];
+           query += ' '+key+' "'+value+'"';
+       }
+       idleHandler.postIdle = getTagSearchHandler(onDone, tag_type);
+       issueCommand(query);
+   };
+
+    /**
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
      * @instance
      * @function
-     * @param {Object} params - object that maps a tag type to a tag value that you want to find matches for {tag<string> => value<string>}
+     * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => value<string>}. For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
     self.search = doSearch;
 
     /**
-     * is passed the number of songs matching the given search criteria
-     * @callback searchCountCallback
-     * @param {Integer} search_result_count - number of songs matched by the tag values
-     *
      * like search except just for finding how many results you'll get (for faster live updates while criteria are edited)
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce
      * @instance
      * @function
-     * @param {Object} params - object that maps a tag type to a tag value that you want to find matches for {tag<string> => value<string>}
+     * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => value<string>} For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchCountCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
     self.searchCount = doSearchCount;
@@ -810,27 +823,6 @@ function MPD(_port){
          current_queue: null,
          queue_version: null,
          playlists:[]
-     },
-
-     /**
-      * valid tag values
-      * null here means it's an open ended tag
-      * @private
-      */
-     tag_values:{
-         any:null,
-         artist:[],
-         album:[],
-         albumartist:[],
-         title:null,
-         track:null,
-         name:[],
-         genre:[],
-         date:null,
-         composer:[],
-         performer:[],
-         comment:[],
-         disc:[]
      },
 
      /**
@@ -1444,14 +1436,12 @@ function MPD(_port){
         _private.responceProcessor = getQueueHandler(function(){
             _private.responceProcessor = getStateHandler(function(){
                 loadAllPlaylists(function(){
-                    loadAllTagValues(function(){
-                        callHandler('DataLoaded',_private.state);
+                    callHandler('DataLoaded',_private.state);
 
-                        //ok everything is loaded...
-                        //just wait for something to change and deal with it
-                        _private.responceProcessor = idleHandler;
-                        sendString('idle\n');
-                    });
+                    //ok everything is loaded...
+                    //just wait for something to change and deal with it
+                    _private.responceProcessor = idleHandler;
+                    sendString('idle\n');
                 });
             });
             sendString('status\n');
@@ -1493,36 +1483,6 @@ function MPD(_port){
             })();
         });
         sendString('listplaylists\n');
-    }
-
-
-    /**
-     * reload all valid tag values
-     * @private
-     */
-    function loadAllTagValues(onDone){
-
-        //get a list of tags we want possible values for
-        var tags = [];
-        for(tag in _private.tag_values){
-            if(_private.tag_values[tag] !== null){
-                tags.push(tag);
-            }
-        }
-        var tag_idx = 0;
-
-        //set the responce processor to add results to tags until we are done, then call on done
-        _private.responceProcessor = getlistHandler(function(list){
-            _private.tag_values[tags[tag_idx]] = list.map(function(obj){return obj[tags[tag_idx]]+'';});
-            tag_idx++;
-            if(tag_idx >= tags.length){
-                onDone();
-            }
-            else{
-                sendString('list '+tags[tag_idx]+'\n');
-            }
-        });
-        sendString('list '+tags[tag_idx]+'\n');
     }
 
 
@@ -1598,6 +1558,27 @@ function MPD(_port){
             function(list){
                 return list.map(function(song){
                     return MPD.Song(self,song);
+                });
+            }
+        );
+    }
+
+
+    /**
+     * get a handler wrapper for the results of a tag search
+     * @private
+     */
+    function getTagSearchHandler(onDone, tag){
+        return getlistHandler(
+            function(){
+                onDone.apply(null, arguments);
+                _private.responceProcessor = idleHandler;
+            },
+            null,
+            null,
+            function(list){
+                return list.map(function(result){
+                    return result[tag];
                 });
             }
         );
@@ -1747,15 +1728,6 @@ function MPD(_port){
             onDone(results[0]);
         });
         issueCommand(query);
-    }
-
-
-    /**
-     * returns a list of valid search tag types
-     * @private
-     */
-    function getTagTypes(){
-        return Object.keys(_private.tag_values);
     }
 
 
@@ -2217,6 +2189,17 @@ MPD.Queue = function(client, source){
 
    return me;
 }
+
+/**
+ * is given search results when the search is complete
+ * @callback searchResultsCallback
+ * @param {song[]} search_results - all of the songs that match the tag values you asked for
+ */
+/**
+ * is passed the number of songs matching the given search criteria
+ * @callback searchCountCallback
+ * @param {Integer} search_result_count - number of songs matched by the tag values
+ */
 
 /**
  * event handler for 'Error' events

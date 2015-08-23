@@ -374,16 +374,24 @@ var UI = (function(){
       */
     function updateSearchEditor(element){
         var target = $(element).parents('tr').find('.search_value');
-        var options = getClient(element).getTagOptions($(element).val());
-        if(options === null){
-            target.replaceWith('<input class="search_value" type="text" ></input>');
+        var tag = $(element).val();
+        if(['any','title', 'track', 'date', 'file'].indexOf(tag) === -1){
+            //if the tag is one that there might be a limited number of results to fetch the valid results from MPD
+            getClient(element).tagSearch(
+                $(element).val(),
+                {},
+                function(options){
+                    var options_code = '';
+                    options.forEach(function(option){
+                        options_code += '<option value="'+option+'">'+option+'</option>';
+                    });
+                    target.replaceWith('<select class="search_value">'+options_code+'</select>');
+                }
+            );
         }
         else{
-            var options_code = '';
-            options.forEach(function(option){
-                options_code += '<option value="'+option+'">'+option+'</option>';
-            });
-            target.replaceWith('<select class="search_value">'+options_code+'</select>');
+            //otherwise just use a freeform text box
+            target.replaceWith('<input class="search_value" type="text" ></input>');
         }
     }
 

@@ -34,7 +34,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html">directoryContentsCallback</a></li><li><a href="global.html">searchResultsCallback</a></li><li><a href="global.html">searchCountCallback</a></li>
+					<li><a href="global.html">directoryContentsCallback</a></li>
 				</ul>
 			</li>
 			
@@ -314,374 +314,6 @@
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
 				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-651">line 651</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-    
-    
-
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="searchResultsCallback"><span class="type-signature"></span>searchResultsCallback<span class="signature">(search_results, params, onDone)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>is given search results when the search is complete</p>
-    </div>
-    
-
-    
-
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>search_results</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;song></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>all of the songs that match the tag values you asked for</p>
-<p>params is a {tag<string> =&gt; value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>object that maps a tag type to a tag value that you want to find matches for {tag<string> =&gt; value<string>}</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>onDone</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html">searchResultsCallback</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>function called when the search results have come back, is passed the results as it's only parameter</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
-    
-    
-    
-<dl class="details">
-	
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-681">line 681</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-    
-    
-
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="searchCountCallback"><span class="type-signature"></span>searchCountCallback<span class="signature">(search_result_count, params, onDone)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>is passed the number of songs matching the given search criteria</p>
-    </div>
-    
-
-    
-
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>search_result_count</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>number of songs matched by the tag values</p>
-<p>like search except just for finding how many results you'll get (for faster live updates while criteria are edited)<br>params is a {tag<string> =&gt; value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>object that maps a tag type to a tag value that you want to find matches for {tag<string> =&gt; value<string>}</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>onDone</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html">searchCountCallback</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>function called when the search results have come back, is passed the results as it's only parameter</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
-    
-    
-    
-<dl class="details">
-	
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-694">line 694</a>
 			</li>
 		</ul>
 	</dd>
@@ -1295,7 +927,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-760">line 760</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-773">line 773</a>
 			</li>
 		</ul>
 	</dd>
@@ -1737,7 +1369,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1924">line 1924</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-1896">line 1896</a>
 			</li>
 		</ul>
 	</dd>
@@ -1882,7 +1514,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2058">line 2058</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2030">line 2030</a>
 			</li>
 		</ul>
 	</dd>
@@ -1896,6 +1528,280 @@
 </dl>
 
 
+    
+</dd>
+
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id="searchResultsCallback"><span class="type-signature"></span>searchResultsCallback<span class="signature">(search_results)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>is given search results when the search is complete</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>search_results</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;song></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>all of the songs that match the tag values you asked for</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2193">line 2193</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id="searchCountCallback"><span class="type-signature"></span>searchCountCallback<span class="signature">(search_result_count)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>is passed the number of songs matching the given search criteria</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>search_result_count</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of songs matched by the tag values</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2198">line 2198</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 
@@ -2019,7 +1925,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2221">line 2221</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2204">line 2204</a>
 			</li>
 		</ul>
 	</dd>
@@ -2168,7 +2074,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2229">line 2229</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2212">line 2212</a>
 			</li>
 		</ul>
 	</dd>
@@ -2317,7 +2223,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2236">line 2236</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2219">line 2219</a>
 			</li>
 		</ul>
 	</dd>
@@ -2466,7 +2372,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2243">line 2243</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2226">line 2226</a>
 			</li>
 		</ul>
 	</dd>
@@ -2615,7 +2521,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2251">line 2251</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2234">line 2234</a>
 			</li>
 		</ul>
 	</dd>
@@ -2764,7 +2670,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2259">line 2259</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2242">line 2242</a>
 			</li>
 		</ul>
 	</dd>
@@ -2913,7 +2819,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2268">line 2268</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2251">line 2251</a>
 			</li>
 		</ul>
 	</dd>
@@ -3062,7 +2968,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2276">line 2276</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2259">line 2259</a>
 			</li>
 		</ul>
 	</dd>
@@ -3150,7 +3056,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2284">line 2284</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2267">line 2267</a>
 			</li>
 		</ul>
 	</dd>
@@ -3238,7 +3144,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2292">line 2292</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-2275">line 2275</a>
 			</li>
 		</ul>
 	</dd>
