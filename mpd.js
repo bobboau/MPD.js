@@ -242,10 +242,6 @@ function MPD(_port){
 
 
     /**
-    * Is passed a playlist
-    * @callback playlistCallback
-    * @param {Playlist} playlist - a playlist
-     *
      * fetches a playlist from MPD identified by it's name
      * @instance
      * @param {String} playlist name - the name of the playlist you want
@@ -656,12 +652,7 @@ function MPD(_port){
     };
 
     /**
-     * Lists all songs and directories in path (blank string for root). also returns song file metadata info
-     * @callback directoryContentsCallback
-     * @param {directory[]} [directory_contents] - the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived
-     *
      * @instance
-     * @function
      * @param {String} [path] - path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')
      * @param {directoryContentsCallback}
      */
@@ -674,7 +665,6 @@ function MPD(_port){
      * return an array of strings which are all of the valid tags
      * note there might be more undocumented tags that you can use just fine not listed here (like musicbrainz)
      * @instance
-     * @function
      * @returns {String[]}
      */
     self.getTagTypes = function getTagTypes(){
@@ -956,9 +946,9 @@ function MPD(_port){
       var url = document.URL;
 
       /*
-      /* We open the websocket encrypted if this page came on an
-      /* https:// url itself, otherwise unencrypted
-      /*/
+       * We open the websocket encrypted if this page came on an
+       * https:// url itself, otherwise unencrypted
+       */
 
       //figure out protocol to use
       if (url.substring(0, 5) == "https") {
@@ -2133,6 +2123,15 @@ MPD.Queue = function(client, source){
    return me;
 }
 
+/**
+ * Is passed a playlist
+ * @callback playlistCallback
+ * @param {Playlist} playlist - a playlist
+ */
+/**
+ * Lists all songs and directories in path (blank string for root). also returns song file metadata info
+ * @callback directoryContentsCallback
+ * @param {directory[]} [directory_contents] - the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived
 /**
  * is given search results when the search is complete
  * @callback searchResultsCallback
