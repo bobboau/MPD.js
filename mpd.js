@@ -1282,10 +1282,14 @@ function MPD(_port){
                 onDone(list);
             }
             else{
-                if(event_type){
-                    callHandler(event_type,[]);
+                var default_responce = [];
+                if(transformFunction){
+                    default_responce = transformFunction(default_responce);
                 }
-                onDone([]);
+                if(event_type){
+                    callHandler(event_type,default_responce);
+                }
+                onDone(default_responce);
             }
         };
     }
