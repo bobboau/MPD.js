@@ -779,7 +779,6 @@ function MPD(_port){
        onConnect:onConnect,
        onDisconnect:onDisconnect,
        onStateChanged:onStateChanged,
-       onQueueChanged:onQueueChanged,
        onPlaylistChanged:onPlaylistChanged
      },
 
@@ -1040,15 +1039,6 @@ function MPD(_port){
 
 
     /**
-     * the queue changed, this is the new queue
-     * @private
-     */
-    function onQueueChanged(event){
-      _private.state.current_queue = MPD.Queue(self, {songs:event});
-    }
-
-
-    /**
      * called when we have some data,
      * might be a message,
      * might be a fragment of a message,
@@ -1146,7 +1136,7 @@ function MPD(_port){
         if(_private.handlers[handler_name]){
             _private.handlers[handler_name].forEach(function(func){
                 try{
-                    func(args, _private.state, self);
+                    func(args, self);
                 }
                 catch(err){
                     dealWithError(err);
@@ -1514,13 +1504,22 @@ function MPD(_port){
      */
     function getQueueHandler(onDone, event_type){
         return getlistHandler(
-            onDone,
+            function(event){
+                //update the internal state with the new queue
+                _private.state.current_queue = event;
+                onDone.apply(null, arguments);
+            },
             event_type,
             null,
             function(list){
-                return list.map(function(song){
-                    return MPD.QueueSong(self,song);
-                });
+                return MPD.Queue(
+                    self,
+                    {
+                        songs:list.map(function(song){
+                            return MPD.QueueSong(self,song);
+                        })
+                    }
+                );
             }
         );
     }
@@ -1533,7 +1532,7 @@ function MPD(_port){
     function getPlaylistsHandler(onDone){
         return getlistHandler(function(event){
             _private.state.playlists = event;
-            onDone(arguments);
+            onDone.apply(null, arguments);
         });
     }
 
@@ -2159,6 +2158,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback errorEventHandler
  * @param {Object} [responce_event] -
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * generic event hander callback called when any sort of event happens
@@ -2166,6 +2166,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback eventHandler
  * @param {Object} [responce_event] - {type:String:data:Object} data depends onf type, see the other event handlers
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * generic event hander callback called when any sort of event happens that doesn't have any handler set for it
@@ -2173,6 +2174,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback unhandledEventHandler
  * @param {Object} [responce_event] - {type:String:data:Object} data depends onf type, see the other event handlers
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'DatabaseChanging' events
@@ -2181,6 +2183,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback databaseChangingEventHandler
  * @param {Object} [responce_event] -
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'DataLoaded' events
@@ -2189,6 +2192,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback dataLoadedEventHandler
  * @param {Object} [responce_event] -
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'StateChanged' events
@@ -2198,14 +2202,16 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback stateChangedEventHandler
  * @param {Object} [responce_event] - state object, the same as is returned by getState
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'QueueChanged' events
  * something about the queue of playing songs changed
  * @event QueueChanged
- * @type {Object}
+ * @type {Queue}
  * @callback queueChangedEventHandler
- * @param {array} [songs] - [{Song}] array of songs on the queue
+ * @param {Queue} queue - the new queue
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'PlaylistsChanged' events
@@ -2214,6 +2220,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback playlistsChangedEventHandler
  * @param {array} [playlists] - [string] array of names of all playlists. note: there doesn't seem to be a way to get just the changed ones, so you get the list of everything, you can tell if something was added or removed but you have no way of telling if any particular playlist has been changed. this is a limitation of MPD
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'Connect' events
@@ -2222,6 +2229,8 @@ MPD.Queue = function(client, source){
  * @event Connect
  * @type {Object}
  * @callback connectEventHandler
+ * @param
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'Disconnect' events
@@ -2229,4 +2238,6 @@ MPD.Queue = function(client, source){
  * @event Disconnect
  * @type {Object}
  * @callback disconnectEventHandler
+ * @param 
+ * @param {MPD} client - the client that this event happened on
  */

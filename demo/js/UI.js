@@ -3,7 +3,7 @@ var UI = (function(){
     /**
      * mapping between html classnames and MPD client methods to call to update them
      */
-
+/*
     var CLASS_MAP = {
         port:function(element){
             return getClient(element).getPort();
@@ -123,7 +123,7 @@ var UI = (function(){
                 }
             );
     };
-
+*/
 
     /********\
     |* INIT *|
@@ -167,7 +167,6 @@ var UI = (function(){
     }
 
     function updatePlaytime(){
-        debugger;
     }
 
     /******************\
