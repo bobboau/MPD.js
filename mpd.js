@@ -259,7 +259,7 @@ function MPD(_port){
                 sendString('listplaylistinfo '+name+'\n');
                 return;
             }
-        });
+        };
         onDone(null);
     };
 
