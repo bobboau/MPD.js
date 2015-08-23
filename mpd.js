@@ -255,8 +255,8 @@ function MPD(_port){
         var ret = null;
         for(var i = 0; i<_private.state.playlists.length; i++){
             if(_private.state.playlists[i].playlist==name){
-                _private.responceProcessor = getPlaylistHandler(onDone, i);
-                sendString('listplaylistinfo '+name+'\n');
+                idleHandler.postIdle = getPlaylistHandler(onDone, i);
+                issueCommand('listplaylistinfo "'+name+'"');
                 return;
             }
         };
@@ -778,8 +778,7 @@ function MPD(_port){
      internal_handlers:{
        onConnect:onConnect,
        onDisconnect:onDisconnect,
-       onStateChanged:onStateChanged,
-       onPlaylistChanged:onPlaylistChanged
+       onStateChanged:onStateChanged
      },
 
      /**
@@ -1110,15 +1109,6 @@ function MPD(_port){
 
 
     /**
-     * the list of playlist has changed
-     * @private
-     */
-    function onPlaylistChanged(event){
-        _private.state.playlists[event.idx] = MPD.Playlist(event);
-    }
-
-
-    /**
      * call all event handlers for the specified event
      * @private
      */
@@ -1136,7 +1126,10 @@ function MPD(_port){
         if(_private.handlers[handler_name]){
             _private.handlers[handler_name].forEach(function(func){
                 try{
-                    func(args, self);
+                    //put in a timeout so our current execution finishesand we aren't in a half formed state when client code reacts to the event
+                    setTimeout(function(){
+                        func(args, self);
+                    }, 50);
                 }
                 catch(err){
                     dealWithError(err);
@@ -1320,7 +1313,7 @@ function MPD(_port){
             break;
 
             case 'stored_playlist': //a stored playlist has been modified, renamed, created or deleted, no idea which one
-                callHandler('PlaylistChanged');
+                actions.playlist = true;
             break;
 
             case 'playlist': //the current playlist has been modified
@@ -1379,20 +1372,13 @@ function MPD(_port){
 
                 //reload the statuses
                 function reloadStatus(){
-                    _private.responceProcessor = getStateHandler(function(){
-                        goBackToWaiting();
-                    });
+                    _private.responceProcessor = getStateHandler(goBackToWaiting);
                     sendString('status\n');
                 }
 
                 //reload the queue, the status, then go back to waiting
                 function reloadQueue(){
-                    _private.responceProcessor = getQueueHandler(
-                        function(){
-                            reloadStatus();
-                        },
-                        'QueueChanged'
-                    );
+                    _private.responceProcessor = getQueueHandler(goBackToWaiting,'QueueChanged');
                     sendString('playlistinfo\n');
                 }
 
@@ -1401,6 +1387,9 @@ function MPD(_port){
                 }
                 else if(actions.status){
                     reloadStatus();
+                }
+                else if(actions.playlist){
+                    loadAllPlaylists(goBackToWaiting);
                 }
                 else{
                     goBackToWaiting();
@@ -1441,12 +1430,13 @@ function MPD(_port){
         _private.responceProcessor = getQueueHandler(function(){
             _private.responceProcessor = getStateHandler(function(){
                 loadAllPlaylists(function(){
-                    callHandler('DataLoaded',_private.state);
 
                     //ok everything is loaded...
                     //just wait for something to change and deal with it
                     _private.responceProcessor = idleHandler;
                     sendString('idle\n');
+
+                    callHandler('DataLoaded',_private.state);
                 });
             });
             sendString('status\n');
@@ -1611,7 +1601,10 @@ function MPD(_port){
      */
     function getPlaylistHandler(onDone, queue_idx){
         return getlistHandler(
-            onDone,
+            function(){
+                onDone.apply(null, arguments);
+                _private.responceProcessor = idleHandler;
+            },
             null,
             null,
             function(list){
@@ -2191,7 +2184,7 @@ MPD.Queue = function(client, source){
  * @event DataLoaded
  * @type {Object}
  * @callback dataLoadedEventHandler
- * @param {Object} [responce_event] -
+ * @param {state} state - state object, the same as is returned by getState
  * @param {MPD} client - the client that this event happened on
  */
 /**
@@ -2201,7 +2194,7 @@ MPD.Queue = function(client, source){
  * @event StateChanged
  * @type {Object}
  * @callback stateChangedEventHandler
- * @param {Object} [responce_event] - state object, the same as is returned by getState
+ * @param {state} state - state object, the same as is returned by getState
  * @param {MPD} client - the client that this event happened on
  */
 /**
@@ -2215,9 +2208,10 @@ MPD.Queue = function(client, source){
  */
 /**
  * event handler for 'PlaylistsChanged' events
- * some playlist somewhere changed.
+ * some playlist somewhere changed. is an array of {playlist:String, last_modified:Date}
  * @event PlaylistsChanged
- * @type {Object}
+ * @type {Object[]}
+ *
  * @callback playlistsChangedEventHandler
  * @param {array} [playlists] - [string] array of names of all playlists. note: there doesn't seem to be a way to get just the changed ones, so you get the list of everything, you can tell if something was added or removed but you have no way of telling if any particular playlist has been changed. this is a limitation of MPD
  * @param {MPD} client - the client that this event happened on
@@ -2238,6 +2232,6 @@ MPD.Queue = function(client, source){
  * @event Disconnect
  * @type {Object}
  * @callback disconnectEventHandler
- * @param 
+ * @param
  * @param {MPD} client - the client that this event happened on
  */

@@ -6,100 +6,94 @@ var UI = (function(){
 /*
     var CLASS_MAP = {
         port:function(element){
-            return getClient(element).getPort();
+            return UI.client.getPort();
         },
         protocol:function(element){
-            return getClient(element).getProtocolVersion();
+            return UI.client.getProtocolVersion();
         },
         connected:function(element){
-            return getClient(element).isConnected();
+            return UI.client.isConnected();
         },
         playstate:function(element){
-            return getClient(element).getPlaystate();
+            return UI.client.getPlaystate();
         },
         volume:function(element){
-            return getClient(element).getVolume();
+            return UI.client.getVolume();
         },
         repeat:function(element){
-            return getClient(element).isRepeat();
+            return UI.client.isRepeat();
         },
         single:function(element){
-            return getClient(element).isSingle();
+            return UI.client.isSingle();
         },
         consume:function(element){
-            return getClient(element).isConsume();
+            return UI.client.isConsume();
         },
         random:function(element){
-            return getClient(element).isRandom();
+            return UI.client.isRandom();
         },
         cur_song_album:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getAlbum();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getAlbum();
         },
         cur_song_artist:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getArtist();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getArtist();
         },
         cur_song_id:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getId();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getId();
         },
         cur_song_last_modified:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getLastModified();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getLastModified();
         },
         cur_song_pos:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getQueuePosition();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getQueuePosition();
         },
         cur_song_duration:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getDuration();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getDuration();
         },
         cur_song_elapsed_time:function(element){
-            return Math.round(getClient(element).getCurrentSongTime()*10)/10;
+            return Math.round(UI.client.getCurrentSongTime()*10)/10;
         },
         cur_song_file:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getPath();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getPath();
         },
         cur_song_title:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getDisplayName();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getDisplayName();
         },
         cur_song_track:function(element){
-            var song = getClient(element).getCurrentSong(); return (!song)?'':song.getTrack();
+            var song = UI.client.getCurrentSong(); return (!song)?'':song.getTrack();
         },
         next_song_album:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getAlbum();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getAlbum();
         },
         next_song_artist:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getArtist();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getArtist();
         },
         next_song_id:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getId();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getId();
         },
         next_song_last_modified:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getLastModified();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getLastModified();
         },
         next_song_pos:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getQueuePosition();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getQueuePosition();
         },
         next_song_duration:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getDuration();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getDuration();
         },
         next_song_file:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getPath();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getPath();
         },
         next_song_title:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getDisplayName();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getDisplayName();
         },
         next_song_track:function(element){
-            var song = getClient(element).getNextSong(); return (!song)?'':song.getTrack();
+            var song = UI.client.getNextSong(); return (!song)?'':song.getTrack();
         },
         queue:function(element){
-            return getClient(element).getQueue().getSongs().map(function(song){
-                return {
-                    key:song.getId(),
-                    value:song.getDisplayName()
-                };
-            });
         },
         playlists:function(element){
             return [{key:'',value:'Load Playlist'}].concat(
-                getClient(element).getPlaylists().map(function(playlist, idx){
+                UI.client.getPlaylists().map(function(playlist, idx){
                     return {
                         key:playlist,
                         value:playlist
@@ -108,44 +102,33 @@ var UI = (function(){
             );
         },
         playlist:function(element){
-            var playlist_id = getDeferedInt(element,'mpd_playlist_id');
-            getClient(element).getPlaylist(
-                playlist_id,
-                function(playlist){
-                    if(playlist){
-                        return playlist.getSongs().map(function(song){
-                            return song.getDisplayName();
-                        });
-                    }
-                    else{
-                        return [];
-                    }
-                }
-            );
     };
 */
+
+    var UI = {
+        client: null
+    };
 
     /********\
     |* INIT *|
     \********/
     $(function(){
-        var client = MPD(8800);
+        UI.client = MPD(8800);
 
-        client.on('StateChanged',updateState);
+        UI.client.on('StateChanged',updateState);
 
-        client.on('QueueChanged',updateQueue);
+        UI.client.on('QueueChanged',updateQueue);
 
-        client.on('PlaylistsChanged',updatePlaylists);
+        UI.client.on('PlaylistsChanged',updatePlaylists);
 
-        client.on('DataLoaded',function(){
+        UI.client.on('DataLoaded',function(){
             //setup file UI
             var element = $('.MPD_file_list_placeholder');
-            var client = getClient(element);
-            element.replaceWith(makeFileListElement(MPD.Directory(client, {directory:'/', last_modified:new Date()})));
+            element.replaceWith(makeFileListElement(MPD.Directory(UI.client, {directory:'/', last_modified:new Date()})));
         });
 
         setInterval(function(){
-            updatePlaytime(client);
+            updatePlaytime(UI.client);
         },150);
     });
 
@@ -154,19 +137,75 @@ var UI = (function(){
     |* private methods *|
     \*******************/
 
-    function updateState(){
-        debugger;
+    /**
+     * update our UI on a state change
+     */
+    function updateState(state, client){
+        $('.MPD_connected').html(client.isConnected()?'Yes':'No');
+        $('.MPD_volume').html(client.getVolume());
+        $('.MPD_playstate').html(client.getPlaystate());
+
+        var current_song = client.getCurrentSong();
+        if(current_song){
+            $('.MPD_cur_song_title').html(current_song.getDisplayName());
+            $('.MPD_cur_song_duration').html(current_song.getDuration());
+            $('.MPD_cur_song_id').val(current_song.getId());
+            //there is a mix of div/span/td type html and input/select typeelements
+            $('.MPD_cur_song_elapsed_time').not(':input').html(Math.round(client.getCurrentSongTime()));
+            $('.MPD_cur_song_elapsed_time').filter(':input').val(client.getCurrentSongTime());
+            $('input[type=range].MPD_cur_song_elapsed_time').prop('max',current_song.getDuration());
+        }
     }
 
-    function updateQueue(){
-        debugger;
+    /**
+     * update our UI on a Queue change
+     */
+    function updateQueue(queue){
+        var option_code = '';
+        queue.getSongs().forEach(function(song){
+            option_code += '<option value="'+song.getId()+'">'+song.getDisplayName()+'</option>';
+        });
+        $('select.MPD_cur_song_id').html(option_code);
     }
 
-    function updatePlaylists(){
-        debugger;
+    /**
+     * update our UI on a playlist change
+     */
+    function updatePlaylists(playlists, client){
+        var option_code = '';
+        playlists.forEach(function(playlist){
+            option_code += '<option value="'+playlist.playlist+'">'+playlist.playlist+'</option>';
+        });
+        $('select.MPD_playlist_selector').html(option_code);
+        selectPlaylist($('select.MPD_playlist_selector'));
     }
 
-    function updatePlaytime(){
+    /**
+     * update our UI for ticking of play time
+     */
+    function updatePlaytime(client){
+        var current_song = client.getCurrentSong();
+        if(current_song){
+            //there is a mix of div/span/td type html and input/select typeelements
+            $('.MPD_cur_song_elapsed_time').not(':input').html(Math.round(client.getCurrentSongTime()));
+            $('.MPD_cur_song_elapsed_time').filter(':input').val(client.getCurrentSongTime());
+        }
+    }
+
+    /**
+     * look for the 'nearest' element matching the passed selector
+     */
+    function searchUp(element, selector){
+        var elements = $($(element).parents().addBack().get().reverse());
+        element = null;
+        elements.each(function(i, test_element){
+            var maybe = $(test_element).find(selector);
+            if(maybe.length > 0){
+                element = maybe;
+                return false;
+            }
+        });
+        return element;
     }
 
     /******************\
@@ -178,7 +217,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function play(element){
-        getClient(element).play();
+        UI.client.play();
     }
 
     /**
@@ -186,7 +225,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function playSong(element){
-        getClient(element).playById($(element).val());
+        UI.client.playById($(element).val());
     }
 
 
@@ -195,7 +234,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function pause(element){
-        getClient(element).pause();
+        UI.client.pause();
     }
 
 
@@ -204,7 +243,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function stop(element){
-        getClient(element).stop();
+        UI.client.stop();
     }
 
 
@@ -213,7 +252,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function previous(element){
-        getClient(element).previous();
+        UI.client.previous();
     }
 
 
@@ -222,7 +261,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function next(element){
-        getClient(element).next();
+        UI.client.next();
     }
 
 
@@ -230,7 +269,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function setVolume(element){
-        getClient(element).setVolume($(element).val());
+        UI.client.setVolume($(element).val());
     }
 
 
@@ -238,7 +277,7 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which client to use)
      */
     function seek(element){
-        getClient(element).seek($(element).val());
+        UI.client.seek($(element).val());
     }
 
 
@@ -246,9 +285,10 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which playlist to use)
      */
     function loadPlaylist(element){
-        var playlist = getDeferedInt(element, 'mpd_playlist_id')
-        if(playlist !== ''){
-            getClient(element).loadPlaylistIntoQueue(playlist);
+        element = $(element);
+        element = searchUp(element,'.MPD_playlist_selector');
+        if(element && element.val() !== ''){
+            UI.client.loadPlaylistIntoQueue(playlist);
         }
     }
 
@@ -257,7 +297,23 @@ var UI = (function(){
      * element -- the element that triggered the event (tells us which playlist to use)
      */
     function selectPlaylist(element){
-        updateElements($('.MPD_playlist'));
+        element = $(element);
+        if(element && element.val() !== ''){
+            var playlist_id = element.val();
+            UI.client.getPlaylist(
+                playlist_id,
+                function(playlist){
+                    if(playlist){
+                        var option_code = '';
+                        playlist.getSongs().forEach(function(song,i){
+                            option_code += '<option value="'+i+'">'+song.getDisplayName()+'</option>';
+                        });
+                        searchUp(element,'.MPD_playlist').html(option_code);
+                    }
+                }
+            );
+            searchUp(element,'.MPD_playlist').html('');
+        }
     }
 
     /**
@@ -265,7 +321,7 @@ var UI = (function(){
      */
     function addSearchCriteria(element){
          var table = $(element).parents('form').find('table');
-         var options = getClient(element).getTagTypes();
+         var options = UI.client.getTagTypes();
          var options_code = '';
          options.forEach(function(option){
              options_code += '<option value="'+option+'">'+option+'</option>';
@@ -285,7 +341,7 @@ var UI = (function(){
         var tag = $(element).val();
         if(['any','title', 'track', 'date', 'file'].indexOf(tag) === -1){
             //if the tag is one that there might be a limited number of results to fetch the valid results from MPD
-            getClient(element).tagSearch(
+            UI.client.tagSearch(
                 $(element).val(),
                 {},
                 function(options){
@@ -321,7 +377,7 @@ var UI = (function(){
            var val = $(row).find('.search_value').val();
            params[tag] = val;
        });
-       getClient(element).search(params, function(results){
+       UI.client.search(params, function(results){
            var options_code = '';
            results.forEach(function(option){
                options_code += '<option value="'+option.getPath()+'">'+option.getDisplayName()+'</option>';
@@ -337,7 +393,7 @@ var UI = (function(){
     function addSelectedSearchResultsToQueue(element){
         var result_element = $(element).parents('form').find('.MPD_search_results');
         var selected_results = result_element.val();
-        var mpd_client = getClient(element);
+        var mpd_client = UI.client;
         selected_results.forEach(function(song_file){
             mpd_client.addSongToQueueByFile(song_file);
         });
@@ -350,7 +406,7 @@ var UI = (function(){
     function addAllSearchResultsToQueue(element){
         var result_element = $(element).parents('form').find('.MPD_search_results');
         var results = [];
-        var mpd_client = getClient(element);
+        var mpd_client = UI.client;
         result_element.find('option').each(function(garbage,option){
             mpd_client.addSongToQueueByFile($(option).attr('value'));
         });
@@ -363,7 +419,7 @@ var UI = (function(){
     function replaceQueueWithSelectedSearchResults(element){
         var result_element = $(element).parents('form').find('.MPD_search_results');
         var selected_results = result_element.val();
-        var mpd_client = getClient(element);
+        var mpd_client = UI.client;
         mpd_client.clearQueue();
         selected_results.forEach(function(song_file){
             mpd_client.addSongToQueueByFile(song_file);
@@ -378,7 +434,7 @@ var UI = (function(){
     function replaceQueueWithAllSearchResults(element){
         var result_element = $(element).parents('form').find('.MPD_search_results');
         var results = [];
-        var mpd_client = getClient(element);
+        var mpd_client = UI.client;
         mpd_client.clearQueue();
         result_element.find('option').each(function(garbage,option){
             mpd_client.addSongToQueueByFile($(option).attr('value'));
@@ -391,7 +447,7 @@ var UI = (function(){
      * removes the currently playing song from the queue
      */
     function removeCurrentSong(element){
-        var mpd_client = getClient(element);
+        var mpd_client = UI.client;
         mpd_client.removeSongsFromQueueById(mpd_client.getCurrentSongID());
     }
 
@@ -400,7 +456,7 @@ var UI = (function(){
      * emptys all songs from the play queue
      */
     function clearQueue(element){
-        getClient(element).clearQueue();
+        UI.client.clearQueue();
     }
 
 
@@ -456,7 +512,7 @@ var UI = (function(){
      */
     function populateFileList(element){
         var path = getFileListPath(element);
-        getClient(element).getDirectoryContents(path, function(directory_contents){
+        UI.client.getDirectoryContents(path, function(directory_contents){
             directory_contents.forEach(function(content){
                 $(element).find('.MPD_file_children').first().append(makeFileListElement(content));
             });
@@ -468,7 +524,7 @@ var UI = (function(){
      * add a song by it's filename
      */
     function addSong(element){
-        getClient(element).addSongToQueueByFile(getFileListPath(element));
+        UI.client.addSongToQueueByFile(getFileListPath(element));
     }
 
 

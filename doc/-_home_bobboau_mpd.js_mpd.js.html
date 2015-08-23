@@ -302,32 +302,39 @@ function MPD(_port){
 
 
     /**
-     * returns an array of strings that is the list of saved playlists
+    * Is passed a playlist
+    * @callback playlistCallback
+    * @param {Playlist} playlist - a playlist
+     *
+     * fetches a playlist from MPD identified by it's name
      * @instance
-     * @returns {Playlist[]}
+     * @param {String} playlist name - the name of the playlist you want
+     * @param {playlistCallback} onDone - function to call with the playlist when we get it
+     */
+    self.getPlaylist = function(name, onDone){
+        var ret = null;
+        for(var i = 0; i&lt;_private.state.playlists.length; i++){
+            if(_private.state.playlists[i].playlist==name){
+                idleHandler.postIdle = getPlaylistHandler(onDone, i);
+                issueCommand('listplaylistinfo "'+name+'"');
+                return;
+            }
+        };
+        onDone(null);
+    };
+
+
+    /**
+     * returns an array of strings that is the list of the names of all available saved playlists
+     * @instance
+     * @returns {String[]}
      */
     self.getPlaylists = function(){
         var playlists = [];
         _private.state.playlists.forEach(function(playlist){
-            playlists.push(playlist);
+            playlists.push(playlist.playlist);
         });
         return playlists;
-    };
-
-    /**
-     * given the name of a playlist retrun the playlist or null if no playlist with that name exsists
-     * @instance
-     * @param {String} name - the name of the playlist you want a copy of
-     * @returns {(Playlist | null)}
-     */
-    self.getPlaylistByName = function(name){
-        var ret = null;
-        _private.state.playlists.forEach(function(p){
-            if(p.getName()==name){
-                ret = p;
-            }
-        });
-        return ret;
     };
 
     /**
@@ -718,7 +725,10 @@ function MPD(_port){
      * @param {String} [path] - path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')
      * @param {directoryContentsCallback}
      */
-    self.getDirectoryContents = getDirectoryContents;
+    self.getDirectoryContents = function(path, onDone){
+        idleHandler.postIdle = getDirectoryHandler(onDone);
+        issueCommand('lsinfo "'+path+'"');
+    };
 
     /**
      * return an array of strings which are all of the valid tags
@@ -762,21 +772,37 @@ function MPD(_port){
     /**
      * params is a {tag&lt;string> => value&lt;string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
      * @instance
-     * @function
      * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag&lt;string> => value&lt;string>}. For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
-    self.search = doSearch;
+    self.search = function(params, onDone){
+         var query = 'search';
+         for(key in params){
+             var value = params[key];
+             query += ' '+key+' "'+value+'"';
+         }
+         idleHandler.postIdle = getSearchHandler(onDone);
+         issueCommand(query);
+     };
 
     /**
      * like search except just for finding how many results you'll get (for faster live updates while criteria are edited)
      * params is a {tag&lt;string> => value&lt;string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce
      * @instance
-     * @function
      * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag&lt;string> => value&lt;string>} For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchCountCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
-    self.searchCount = doSearchCount;
+    self.searchCount = function(params, onDone){
+        var query = 'count';
+        for(key in params){
+            var value = params[key];
+            query += ' '+key+' "'+value+'"';
+        }
+        idleHandler.postIdle = getSearchHandler(function(results){
+            onDone(results[0]);
+        });
+        issueCommand(query);
+    };
 
    /****************\
    |* private data *|
@@ -812,9 +838,7 @@ function MPD(_port){
      internal_handlers:{
        onConnect:onConnect,
        onDisconnect:onDisconnect,
-       onStateChanged:onStateChanged,
-       onQueueChanged:onQueueChanged,
-       onPlaylistChanged:onPlaylistChanged
+       onStateChanged:onStateChanged
      },
 
      /**
@@ -858,7 +882,7 @@ function MPD(_port){
       * actual attribute: songid
       * @property {Queue} current_queue - the songs that are currently in rotation for playing, in the order they are to play (unless random is set to true)
       * @property {Integer} queue_version - a number associated with the queue that changes every time the queue changes
-      * @property {Playlist[]} playlists - names of all of the saved playlists
+      * @property {String[]} playlists - names of all of the saved playlists
       */
      state:{
          version: null,
@@ -1074,15 +1098,6 @@ function MPD(_port){
 
 
     /**
-     * the queue changed, this is the new queue
-     * @private
-     */
-    function onQueueChanged(event){
-      _private.state.current_queue = MPD.Queue(self, {songs:event});
-    }
-
-
-    /**
      * called when we have some data,
      * might be a message,
      * might be a fragment of a message,
@@ -1154,15 +1169,6 @@ function MPD(_port){
 
 
     /**
-     * the list of playlist has changed
-     * @private
-     */
-    function onPlaylistChanged(event){
-        _private.state.playlists[event.idx] = MPD.Playlist(event);
-    }
-
-
-    /**
      * call all event handlers for the specified event
      * @private
      */
@@ -1180,7 +1186,10 @@ function MPD(_port){
         if(_private.handlers[handler_name]){
             _private.handlers[handler_name].forEach(function(func){
                 try{
-                    func(args, _private.state, self);
+                    //put in a timeout so our current execution finishesand we aren't in a half formed state when client code reacts to the event
+                    setTimeout(function(){
+                        func(args, self);
+                    }, 50);
                 }
                 catch(err){
                     dealWithError(err);
@@ -1363,7 +1372,7 @@ function MPD(_port){
                 actions.everything = true;
             break;
 
-            case 'stored_playlist': //a stored playlist has been modified, renamed, created or deleted
+            case 'stored_playlist': //a stored playlist has been modified, renamed, created or deleted, no idea which one
                 actions.playlist = true;
             break;
 
@@ -1423,42 +1432,27 @@ function MPD(_port){
 
                 //reload the statuses
                 function reloadStatus(){
-                    _private.responceProcessor = getStateHandler(function(){
-                        goBackToWaiting();
-                    });
+                    _private.responceProcessor = getStateHandler(goBackToWaiting);
                     sendString('status\n');
                 }
 
                 //reload the queue, the status, then go back to waiting
                 function reloadQueue(){
-                    _private.responceProcessor = getQueueHandler(
-                        function(){
-                            reloadStatus();
-                        },
-                        'QueueChanged'
-                    );
+                    _private.responceProcessor = getQueueHandler(goBackToWaiting,'QueueChanged');
                     sendString('playlistinfo\n');
                 }
 
-                //reloading all the stuff we need to reload
-                function reloadStuff(){
-                    if(actions.queue){
-                        reloadQueue();
-                    }
-                    else if(actions.status){
-                        reloadStatus();
-                    }
-                    else{
-                        goBackToWaiting();
-                    }
+                if(actions.queue){
+                    reloadQueue();
                 }
-
-                //maybe do this after reloading playlists
-                if(actions.playlist){
-                    loadAllPlaylists(reloadStuff);
+                else if(actions.status){
+                    reloadStatus();
+                }
+                else if(actions.playlist){
+                    loadAllPlaylists(goBackToWaiting);
                 }
                 else{
-                    reloadStuff();
+                    goBackToWaiting();
                 }
             }
         }
@@ -1496,12 +1490,13 @@ function MPD(_port){
         _private.responceProcessor = getQueueHandler(function(){
             _private.responceProcessor = getStateHandler(function(){
                 loadAllPlaylists(function(){
-                    callHandler('DataLoaded',_private.state);
 
                     //ok everything is loaded...
                     //just wait for something to change and deal with it
                     _private.responceProcessor = idleHandler;
                     sendString('idle\n');
+
+                    callHandler('DataLoaded',_private.state);
                 });
             });
             sendString('status\n');
@@ -1518,29 +1513,9 @@ function MPD(_port){
      */
     function loadAllPlaylists(onDone){
         _private.responceProcessor = getPlaylistsHandler(function(){
-            //ok, because this wasn't complicated enough allready
-            //we have to load the contents of each playlist, but we have to do it sequentially
-            //but asynchronusly :)
-
-            //load a list
-            var list_idx = 0;
-            (function loadList(last_playlist){
-                if(list_idx > 0){
-                    //we need to save the transformed playlist for the playlist we just finished loading
-                    _private.state.playlists[list_idx-1] = last_playlist;
-                }
-                if(list_idx >= _private.state.playlists.length){
-                    //we have loaded all playlists
-                    onDone();
-                    callHandler('PlaylistsChanged',_private.state.playlists);
-                }
-                else{
-                    //we still have at least one more playlist to load
-                    _private.responceProcessor = getPlaylistHandler(loadList, list_idx);
-                    sendString('listplaylistinfo '+_private.state.playlists[list_idx].playlist+'\n');
-                    list_idx++;
-                }
-            })();
+            //we have loaded all playlists
+            onDone();
+            callHandler('PlaylistsChanged',_private.state.playlists);
         });
         sendString('listplaylists\n');
     }
@@ -1579,13 +1554,22 @@ function MPD(_port){
      */
     function getQueueHandler(onDone, event_type){
         return getlistHandler(
-            onDone,
+            function(event){
+                //update the internal state with the new queue
+                _private.state.current_queue = event;
+                onDone.apply(null, arguments);
+            },
             event_type,
             null,
             function(list){
-                return list.map(function(song){
-                    return MPD.QueueSong(self,song);
-                });
+                return MPD.Queue(
+                    self,
+                    {
+                        songs:list.map(function(song){
+                            return MPD.QueueSong(self,song);
+                        })
+                    }
+                );
             }
         );
     }
@@ -1598,7 +1582,7 @@ function MPD(_port){
     function getPlaylistsHandler(onDone){
         return getlistHandler(function(event){
             _private.state.playlists = event;
-            onDone(arguments);
+            onDone.apply(null, arguments);
         });
     }
 
@@ -1677,11 +1661,14 @@ function MPD(_port){
      */
     function getPlaylistHandler(onDone, queue_idx){
         return getlistHandler(
-            onDone,
-            'PlaylistChanged',
+            function(){
+                onDone.apply(null, arguments);
+                _private.responceProcessor = idleHandler;
+            },
+            null,
             null,
             function(list){
-                var source = _private.state.playlists[queue_idx];
+                var source = cloneObject(_private.state.playlists[queue_idx]);
                 source.songs = list.map(function(song){
                     return MPD.Song(self,song);
                 });
@@ -1756,50 +1743,6 @@ function MPD(_port){
      */
     function cloneObject(obj){
         return JSON.parse(JSON.stringify(obj));
-    }
-
-    /**
-     * params is a {tag&lt;string> => value&lt;string>} object, valid tags are enumerated in getTagTypes
-     * onDone is a function that should be called on complete, will be passed an array of song objects
-     * @private
-     */
-    function doSearch(params, onDone){
-        var query = 'search';
-        for(key in params){
-            var value = params[key];
-            query += ' '+key+' "'+value+'"';
-        }
-        idleHandler.postIdle = getSearchHandler(onDone);
-        issueCommand(query);
-    }
-
-
-    /**
-     * like above except for getting counts
-     * @private
-     */
-    function doSearchCount(params, onDone){
-        var query = 'count';
-        for(key in params){
-            var value = params[key];
-            query += ' '+key+' "'+value+'"';
-        }
-        idleHandler.postIdle = getSearchHandler(function(results){
-            onDone(results[0]);
-        });
-        issueCommand(query);
-    }
-
-
-    /**
-     * Lists all songs and directories in path. also returns song file metadata info
-     * path string -- the uri to the directory you are interested relative to the MPD media directory (blank string for root)
-     * onDone function -- function called with all of the directory info at some point in the future
-     * @private
-     */
-    function getDirectoryContents(path, onDone){
-        idleHandler.postIdle = getDirectoryHandler(onDone);
-        issueCommand('lsinfo "'+path+'"');
     }
 
 
@@ -2268,6 +2211,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback errorEventHandler
  * @param {Object} [responce_event] -
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * generic event hander callback called when any sort of event happens
@@ -2275,6 +2219,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback eventHandler
  * @param {Object} [responce_event] - {type:String:data:Object} data depends onf type, see the other event handlers
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * generic event hander callback called when any sort of event happens that doesn't have any handler set for it
@@ -2282,6 +2227,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback unhandledEventHandler
  * @param {Object} [responce_event] - {type:String:data:Object} data depends onf type, see the other event handlers
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'DatabaseChanging' events
@@ -2290,6 +2236,7 @@ MPD.Queue = function(client, source){
  * @type {Object}
  * @callback databaseChangingEventHandler
  * @param {Object} [responce_event] -
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'DataLoaded' events
@@ -2297,7 +2244,8 @@ MPD.Queue = function(client, source){
  * @event DataLoaded
  * @type {Object}
  * @callback dataLoadedEventHandler
- * @param {Object} [responce_event] -
+ * @param {state} state - state object, the same as is returned by getState
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'StateChanged' events
@@ -2306,23 +2254,27 @@ MPD.Queue = function(client, source){
  * @event StateChanged
  * @type {Object}
  * @callback stateChangedEventHandler
- * @param {Object} [responce_event] - state object, the same as is returned by getState
+ * @param {state} state - state object, the same as is returned by getState
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'QueueChanged' events
  * something about the queue of playing songs changed
  * @event QueueChanged
- * @type {Object}
+ * @type {Queue}
  * @callback queueChangedEventHandler
- * @param {array} [songs] - [{Song}] array of songs on the queue
+ * @param {Queue} queue - the new queue
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'PlaylistsChanged' events
- * some playlist somewhere changed.
+ * some playlist somewhere changed. is an array of {playlist:String, last_modified:Date}
  * @event PlaylistsChanged
- * @type {Object}
+ * @type {Object[]}
+ *
  * @callback playlistsChangedEventHandler
  * @param {array} [playlists] - [string] array of names of all playlists. note: there doesn't seem to be a way to get just the changed ones, so you get the list of everything, you can tell if something was added or removed but you have no way of telling if any particular playlist has been changed. this is a limitation of MPD
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'Connect' events
@@ -2331,6 +2283,8 @@ MPD.Queue = function(client, source){
  * @event Connect
  * @type {Object}
  * @callback connectEventHandler
+ * @param
+ * @param {MPD} client - the client that this event happened on
  */
 /**
  * event handler for 'Disconnect' events
@@ -2338,6 +2292,8 @@ MPD.Queue = function(client, source){
  * @event Disconnect
  * @type {Object}
  * @callback disconnectEventHandler
+ * @param
+ * @param {MPD} client - the client that this event happened on
  */
 </pre>
 	</article>
@@ -2363,7 +2319,7 @@ MPD.Queue = function(client, source){
 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a>
-	on Sat Aug 22nd 2015 using the <a
+	on Sun Aug 23rd 2015 using the <a
 	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 </span>
 </footer>
