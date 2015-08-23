@@ -62,14 +62,12 @@
             <select class="MPD_playlist_selector" onchange="UI.selectPlaylist(this);"/>
             <input type="button" value="Load" onclick="UI.loadPlaylist(this);" />
             <br/>
-            <select multiple class="MPD_playlist"/>
+            <select multiple class="MPD_playlist"></select>
         </div>
-        <br/>
         <br/>
         <div>
             Search<br/>
             <form>
-                <table></table>
                 <input type="button" value="Add Criteria" onclick="UI.addSearchCriteria(this);"/>
                 <br/>
                 <input type="button" value="Search" onclick="UI.doSearch(this);" />
