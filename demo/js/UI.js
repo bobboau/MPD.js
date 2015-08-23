@@ -101,34 +101,27 @@ var UI = (function(){
             return [{key:'',value:'Load Playlist'}].concat(
                 getClient(element).getPlaylists().map(function(playlist, idx){
                     return {
-                        key:playlist.getName(),
-                        value:playlist.getName()
+                        key:playlist,
+                        value:playlist
                     };
                 })
             );
         },
         playlist:function(element){
             var playlist_id = getDeferedInt(element,'mpd_playlist_id');
-            var playlist = getClient(element).getPlaylistByName(playlist_id);
-            if(playlist){
-                return playlist.getSongs().map(function(song){
-                    return song.getDisplayName();
-                });
-            }
-            else{
-                return [];
-            }
-        }
-    };
-
-    /****************\
-    |* private data *|
-    \****************/
-    var UI = {
-        /**
-         * collection of clients
-         */
-        mpd_clients : []
+            getClient(element).getPlaylist(
+                playlist_id,
+                function(playlist){
+                    if(playlist){
+                        return playlist.getSongs().map(function(song){
+                            return song.getDisplayName();
+                        });
+                    }
+                    else{
+                        return [];
+                    }
+                }
+            );
     };
 
 
@@ -136,32 +129,23 @@ var UI = (function(){
     |* INIT *|
     \********/
     $(function(){
-        for(var i = 0; i<1; i++){
-            var client = MPD(8800);
-            client.id = i;
-            UI.mpd_clients.push(client);
+        var client = MPD(8800);
 
-            client.on('StateChanged',function(){
-                updateElements($('.MPD'));
-            });
+        client.on('StateChanged',updateState);
 
-            client.on('QueueChanged',function(){
-                updateElements($('.MPD select.MPD_cur_song_id'));
-            });
+        client.on('QueueChanged',updateQueue);
 
-            client.on('PlaylistsChanged',function(){
-                updateElements($('.MPD [data-MPD_data_map="playlists"]'));
-            });
+        client.on('PlaylistsChanged',updatePlaylists);
 
-            client.on('DataLoaded',function(){
-                var element = $('.MPD_file_list_placeholder');
-                var client = getClient(element);
-                element.replaceWith(makeFileListElement(MPD.Directory(client, {directory:'/', last_modified:new Date()})));
-            });
-        }
+        client.on('DataLoaded',function(){
+            //setup file UI
+            var element = $('.MPD_file_list_placeholder');
+            var client = getClient(element);
+            element.replaceWith(makeFileListElement(MPD.Directory(client, {directory:'/', last_modified:new Date()})));
+        });
 
         setInterval(function(){
-            updateElements($('.MPD_cur_song_elapsed_time'));
+            updatePlaytime(client);
         },150);
     });
 
@@ -170,95 +154,20 @@ var UI = (function(){
     |* private methods *|
     \*******************/
 
-
-    /**
-     * gets the int hiding somewhere in the perents of the passed element
-     */
-    function getDeferedInt(element, data_key){
-        var data_parent = $(element).parents('[data-'+data_key+']');
-        if(!data_parent){
-            return null;
-        }
-        var data = data_parent.data(data_key)+'';
-        if(!data.match(/^\d+$/)){
-            data = data_parent.find(data).val();
-        }
-        if(!data.match(/^\d+$/)){
-            return data;
-        }
-        return parseInt(data, 10);
+    function updateState(){
+        debugger;
     }
 
-
-    /**
-     * gets the client associated with this element
-     */
-    function getClient(element){
-        var client_id = getDeferedInt(element, 'mpd_client_id');
-        return UI.mpd_clients[client_id];
+    function updateQueue(){
+        debugger;
     }
 
+    function updatePlaylists(){
+        debugger;
+    }
 
-    /**
-     * updates the elements in the passed jquery selection
-     */
-    function updateElements(selection){
-        var selector = "[class^='MPD_'],[data-MPD_data_map]";
-        $(selection).find(selector).andSelf().filter(selector).each(function(idx, element){
-            element = $(element);
-            //get the class_name related mappers
-            var matches = (!element.attr('class'))?[]:element.attr('class').match(/MPD_[\w_]+/g).map(function(str){return str.substring(4)});
-            //get the manual mappings
-            var mappers = element.data('mpd_data_map');
-            if(mappers){
-                matches = mappers.split(',').concat(matches);
-            }
-            matches.forEach(function(mapper){
-                //normalize these
-                mapper = mapper.split(':');
-                var dest = (mapper.length>1)?mapper[1]:null;
-                mapper = mapper[0];
-
-                var updateFunction = CLASS_MAP[mapper];
-                if(updateFunction){
-                    var val = updateFunction(element);
-
-                    if(dest){
-                        element.prop(dest,val);
-                    }
-                    else{
-                        if(element.is('input,select') && typeof val != 'object'){
-                            if(element.is(':checkbox')){
-                                element.prop('checked', val);
-                            }
-                            else{
-                                element.val(val);
-                            }
-                        }
-                        else{
-                            if(typeof val === 'object'){
-                                var new_val = '';
-                                $.each(val,function(index,item){
-                                    if(element.is('select')){
-                                        if(typeof item == 'object'){
-                                            new_val += '<option value='+item.key+'>'+item.value+'</option>';
-                                        }
-                                        else{
-                                            new_val += '<option value='+index+'>'+item+'</option>';
-                                        }
-                                    }
-                                    else{
-                                        new_val += item;
-                                    }
-                                });
-                                val = new_val;
-                            }
-                            element.html(val);
-                        }
-                    }
-                }
-            });
-        });
+    function updatePlaytime(){
+        debugger;
     }
 
     /******************\

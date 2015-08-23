@@ -242,32 +242,39 @@ function MPD(_port){
 
 
     /**
-     * returns an array of strings that is the list of saved playlists
+    * Is passed a playlist
+    * @callback playlistCallback
+    * @param {Playlist} playlist - a playlist
+     *
+     * fetches a playlist from MPD identified by it's name
      * @instance
-     * @returns {Playlist[]}
+     * @param {String} playlist name - the name of the playlist you want
+     * @param {playlistCallback} onDone - function to call with the playlist when we get it
+     */
+    self.getPlaylist = function(name, onDone){
+        var ret = null;
+        for(var i = 0; i<_private.state.playlists.length; i++){
+            if(_private.state.playlists[i].playlist==name){
+                _private.responceProcessor = getPlaylistHandler(onDone, i);
+                sendString('listplaylistinfo '+name+'\n');
+                return;
+            }
+        });
+        onDone(null);
+    };
+
+
+    /**
+     * returns an array of strings that is the list of the names of all available saved playlists
+     * @instance
+     * @returns {String[]}
      */
     self.getPlaylists = function(){
         var playlists = [];
         _private.state.playlists.forEach(function(playlist){
-            playlists.push(playlist);
+            playlists.push(playlist.playlist);
         });
         return playlists;
-    };
-
-    /**
-     * given the name of a playlist retrun the playlist or null if no playlist with that name exsists
-     * @instance
-     * @param {String} name - the name of the playlist you want a copy of
-     * @returns {(Playlist | null)}
-     */
-    self.getPlaylistByName = function(name){
-        var ret = null;
-        _private.state.playlists.forEach(function(p){
-            if(p.getName()==name){
-                ret = p;
-            }
-        });
-        return ret;
     };
 
     /**
@@ -658,7 +665,10 @@ function MPD(_port){
      * @param {String} [path] - path to the directory you are interested in relative to MPD's music root directory (root is a blank string, never start with '/')
      * @param {directoryContentsCallback}
      */
-    self.getDirectoryContents = getDirectoryContents;
+    self.getDirectoryContents = function(path, onDone){
+        idleHandler.postIdle = getDirectoryHandler(onDone);
+        issueCommand('lsinfo "'+path+'"');
+    };
 
     /**
      * return an array of strings which are all of the valid tags
@@ -1319,8 +1329,8 @@ function MPD(_port){
                 actions.everything = true;
             break;
 
-            case 'stored_playlist': //a stored playlist has been modified, renamed, created or deleted
-                actions.playlist = true;
+            case 'stored_playlist': //a stored playlist has been modified, renamed, created or deleted, no idea which one
+                callHandler('PlaylistChanged');
             break;
 
             case 'playlist': //the current playlist has been modified
@@ -1396,25 +1406,14 @@ function MPD(_port){
                     sendString('playlistinfo\n');
                 }
 
-                //reloading all the stuff we need to reload
-                function reloadStuff(){
-                    if(actions.queue){
-                        reloadQueue();
-                    }
-                    else if(actions.status){
-                        reloadStatus();
-                    }
-                    else{
-                        goBackToWaiting();
-                    }
+                if(actions.queue){
+                    reloadQueue();
                 }
-
-                //maybe do this after reloading playlists
-                if(actions.playlist){
-                    loadAllPlaylists(reloadStuff);
+                else if(actions.status){
+                    reloadStatus();
                 }
                 else{
-                    reloadStuff();
+                    goBackToWaiting();
                 }
             }
         }
@@ -1474,29 +1473,9 @@ function MPD(_port){
      */
     function loadAllPlaylists(onDone){
         _private.responceProcessor = getPlaylistsHandler(function(){
-            //ok, because this wasn't complicated enough allready
-            //we have to load the contents of each playlist, but we have to do it sequentially
-            //but asynchronusly :)
-
-            //load a list
-            var list_idx = 0;
-            (function loadList(last_playlist){
-                if(list_idx > 0){
-                    //we need to save the transformed playlist for the playlist we just finished loading
-                    _private.state.playlists[list_idx-1] = last_playlist;
-                }
-                if(list_idx >= _private.state.playlists.length){
-                    //we have loaded all playlists
-                    onDone();
-                    callHandler('PlaylistsChanged',_private.state.playlists);
-                }
-                else{
-                    //we still have at least one more playlist to load
-                    _private.responceProcessor = getPlaylistHandler(loadList, list_idx);
-                    sendString('listplaylistinfo '+_private.state.playlists[list_idx].playlist+'\n');
-                    list_idx++;
-                }
-            })();
+            //we have loaded all playlists
+            onDone();
+            callHandler('PlaylistsChanged',_private.state.playlists);
         });
         sendString('listplaylists\n');
     }
@@ -1634,10 +1613,10 @@ function MPD(_port){
     function getPlaylistHandler(onDone, queue_idx){
         return getlistHandler(
             onDone,
-            'PlaylistChanged',
+            null,
             null,
             function(list){
-                var source = _private.state.playlists[queue_idx];
+                var source = cloneObject(_private.state.playlists[queue_idx]);
                 source.songs = list.map(function(song){
                     return MPD.Song(self,song);
                 });
@@ -1712,17 +1691,6 @@ function MPD(_port){
      */
     function cloneObject(obj){
         return JSON.parse(JSON.stringify(obj));
-    }
-
-    /**
-     * Lists all songs and directories in path. also returns song file metadata info
-     * path string -- the uri to the directory you are interested relative to the MPD media directory (blank string for root)
-     * onDone function -- function called with all of the directory info at some point in the future
-     * @private
-     */
-    function getDirectoryContents(path, onDone){
-        idleHandler.postIdle = getDirectoryHandler(onDone);
-        issueCommand('lsinfo "'+path+'"');
     }
 
 
