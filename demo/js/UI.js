@@ -3,107 +3,7 @@ var UI = (function(){
     /**
      * mapping between html classnames and MPD client methods to call to update them
      */
-/*
-    var CLASS_MAP = {
-        port:function(element){
-            return UI.client.getPort();
-        },
-        protocol:function(element){
-            return UI.client.getProtocolVersion();
-        },
-        connected:function(element){
-            return UI.client.isConnected();
-        },
-        playstate:function(element){
-            return UI.client.getPlaystate();
-        },
-        volume:function(element){
-            return UI.client.getVolume();
-        },
-        repeat:function(element){
-            return UI.client.isRepeat();
-        },
-        single:function(element){
-            return UI.client.isSingle();
-        },
-        consume:function(element){
-            return UI.client.isConsume();
-        },
-        random:function(element){
-            return UI.client.isRandom();
-        },
-        cur_song_album:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getAlbum();
-        },
-        cur_song_artist:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getArtist();
-        },
-        cur_song_id:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getId();
-        },
-        cur_song_last_modified:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getLastModified();
-        },
-        cur_song_pos:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getQueuePosition();
-        },
-        cur_song_duration:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getDuration();
-        },
-        cur_song_elapsed_time:function(element){
-            return Math.round(UI.client.getCurrentSongTime()*10)/10;
-        },
-        cur_song_file:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getPath();
-        },
-        cur_song_title:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getDisplayName();
-        },
-        cur_song_track:function(element){
-            var song = UI.client.getCurrentSong(); return (!song)?'':song.getTrack();
-        },
-        next_song_album:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getAlbum();
-        },
-        next_song_artist:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getArtist();
-        },
-        next_song_id:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getId();
-        },
-        next_song_last_modified:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getLastModified();
-        },
-        next_song_pos:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getQueuePosition();
-        },
-        next_song_duration:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getDuration();
-        },
-        next_song_file:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getPath();
-        },
-        next_song_title:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getDisplayName();
-        },
-        next_song_track:function(element){
-            var song = UI.client.getNextSong(); return (!song)?'':song.getTrack();
-        },
-        queue:function(element){
-        },
-        playlists:function(element){
-            return [{key:'',value:'Load Playlist'}].concat(
-                UI.client.getPlaylists().map(function(playlist, idx){
-                    return {
-                        key:playlist,
-                        value:playlist
-                    };
-                })
-            );
-        },
-        playlist:function(element){
-    };
-*/
+
 
     var UI = {
         client: null
@@ -288,7 +188,7 @@ var UI = (function(){
         element = $(element);
         element = searchUp(element,'.MPD_playlist_selector');
         if(element && element.val() !== ''){
-            UI.client.loadPlaylistIntoQueue(playlist);
+            UI.client.loadPlaylistIntoQueue(element.val());
         }
     }
 

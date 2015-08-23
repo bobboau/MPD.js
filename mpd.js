@@ -669,7 +669,6 @@ function MPD(_port){
      */
     self.getTagTypes = function getTagTypes(){
         return   ['any','artist','album','albumartist','title','track','name','genre','date','composer','performer','comment','disc'];
-
     };
 
     /**
