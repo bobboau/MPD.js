@@ -702,21 +702,37 @@ function MPD(_port){
     /**
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed an array of song objects
      * @instance
-     * @function
      * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => value<string>}. For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
-    self.search = doSearch;
+    self.search = function(params, onDone){
+         var query = 'search';
+         for(key in params){
+             var value = params[key];
+             query += ' '+key+' "'+value+'"';
+         }
+         idleHandler.postIdle = getSearchHandler(onDone);
+         issueCommand(query);
+     };
 
     /**
      * like search except just for finding how many results you'll get (for faster live updates while criteria are edited)
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce
      * @instance
-     * @function
      * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => value<string>} For a list of acceptable tag/keys @see {@link getTagTypes}. For a list of acceptable values for a given tag @see {@link getTagOptions}.
      * @param {searchCountCallback} onDone - function called when the search results have come back, is passed the results as it's only parameter
      */
-    self.searchCount = doSearchCount;
+    self.searchCount = function(params, onDone){
+        var query = 'count';
+        for(key in params){
+            var value = params[key];
+            query += ' '+key+' "'+value+'"';
+        }
+        idleHandler.postIdle = getSearchHandler(function(results){
+            onDone(results[0]);
+        });
+        issueCommand(query);
+    };
 
    /****************\
    |* private data *|
@@ -798,7 +814,7 @@ function MPD(_port){
       * actual attribute: songid
       * @property {Queue} current_queue - the songs that are currently in rotation for playing, in the order they are to play (unless random is set to true)
       * @property {Integer} queue_version - a number associated with the queue that changes every time the queue changes
-      * @property {Playlist[]} playlists - names of all of the saved playlists
+      * @property {String[]} playlists - names of all of the saved playlists
       */
      state:{
          version: null,
@@ -1697,39 +1713,6 @@ function MPD(_port){
     function cloneObject(obj){
         return JSON.parse(JSON.stringify(obj));
     }
-
-    /**
-     * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes
-     * onDone is a function that should be called on complete, will be passed an array of song objects
-     * @private
-     */
-    function doSearch(params, onDone){
-        var query = 'search';
-        for(key in params){
-            var value = params[key];
-            query += ' '+key+' "'+value+'"';
-        }
-        idleHandler.postIdle = getSearchHandler(onDone);
-        issueCommand(query);
-    }
-
-
-    /**
-     * like above except for getting counts
-     * @private
-     */
-    function doSearchCount(params, onDone){
-        var query = 'count';
-        for(key in params){
-            var value = params[key];
-            query += ' '+key+' "'+value+'"';
-        }
-        idleHandler.postIdle = getSearchHandler(function(results){
-            onDone(results[0]);
-        });
-        issueCommand(query);
-    }
-
 
     /**
      * Lists all songs and directories in path. also returns song file metadata info
