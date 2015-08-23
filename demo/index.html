@@ -15,6 +15,10 @@
     <script src="js/UI.js"></script>
 </head>
 <body>
+    <h1>DEMO</h1>
+    <h4>This is a demo and example usage of the <a href="https://github.com/bobboau/MPD.js">MPD.js</a> client library.</h4>
+    <h4>It's ugly by design. MPD.js is not a GUI product, it's a component to make making GUI products easier.</h4>
+    <h4>In other words, GO MAKE YOUR OWN! :D</h4>
     <div class="MPD MPD_client">
         <table><tr><td>
             <table>
@@ -51,13 +55,18 @@
         </td><td>
             Play Queue<br/>
             <select multiple class="MPD_cur_song_id" onclick="UI.playSong(this);"/>
-        </td><td>
+        </td></tr></table>
+        <br/>
+        <div>
             Playlists<br/>
             <select class="MPD_playlist_selector" onchange="UI.selectPlaylist(this);"/>
             <input type="button" value="Load" onclick="UI.loadPlaylist(this);" />
             <br/>
             <select multiple class="MPD_playlist"/>
-        </td><td>
+        </div>
+        <br/>
+        <br/>
+        <div>
             Search<br/>
             <form>
                 <table></table>
@@ -72,7 +81,7 @@
                 <input type="button" value="Replace Queue w Selected" onclick="UI.replaceQueueWithSelectedSearchResults(this);"/>
                 <input type="button" value="Replace Queue" onclick="UI.replaceQueueWithAllSearchResults(this);"/>
             </form>
-        </td></tr></table>
+        </div>
         <br/>
         <div class="MPD_file_list_placeholder"></div>
         <template id="template_MPD_file_list">
