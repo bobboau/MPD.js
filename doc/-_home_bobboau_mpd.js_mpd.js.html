@@ -27,7 +27,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="Directory.html">Directory</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li>
+					<li><a href="Song.html">Song</a></li><li><a href="QueueSong.html">QueueSong</a></li><li><a href="PlaylistSong.html">PlaylistSong</a></li><li><a href="SearchSong.html">SearchSong</a></li><li><a href="FileSong.html">FileSong</a></li><li><a href="Directory.html">Directory</a></li><li><a href="Songlist.html">Songlist</a></li><li><a href="Playlist.html">Playlist</a></li><li><a href="Queue.html">Queue</a></li><li><a href="MPD.html">MPD</a></li>
 				</ul>
 			</li>
 			
@@ -553,7 +553,7 @@ function MPD(_port){
      * @instance
      * @param {Integer} id - the queue id of the song you want to remove from the queue
      */
-    self.removeSongsFromQueueById = function(id){
+    self.removeSongFromQueueById = function(id){
         issueCommand('deleteid '+id);
     };
 
@@ -724,12 +724,12 @@ function MPD(_port){
     /**
      * return an array of strings which are all of the valid tags
      * note there might be more undocumented tags that you can use just fine not listed here (like musicbrainz)
+     *@todo:use the tagtypes command to fetch these
      * @instance
      * @returns {String[]}
      */
     self.getTagTypes = function getTagTypes(){
         return   ['any','artist','album','albumartist','title','track','name','genre','date','composer','performer','comment','disc'];
-
     };
 
     /**
@@ -1342,10 +1342,14 @@ function MPD(_port){
                 onDone(list);
             }
             else{
-                if(event_type){
-                    callHandler(event_type,[]);
+                var default_responce = [];
+                if(transformFunction){
+                    default_responce = transformFunction(default_responce);
                 }
-                onDone([]);
+                if(event_type){
+                    callHandler(event_type,default_responce);
+                }
+                onDone(default_responce);
             }
         };
     }
@@ -1591,7 +1595,7 @@ function MPD(_port){
             null,
             function(list){
                 return list.map(function(song){
-                    return MPD.Song(self,song);
+                    return MPD.SearchSong(self,song);
                 });
             }
         );
@@ -1634,7 +1638,7 @@ function MPD(_port){
             function(list){
                 return list.map(function(file){
                     if(typeof file.file !== 'undefined'){
-                        return MPD.Song(self,file);
+                        return MPD.FileSong(self,file);
                     }
                     else{
                         return MPD.Directory(self,file);
@@ -1660,7 +1664,7 @@ function MPD(_port){
             function(list){
                 var source = cloneObject(_private.state.playlists[queue_idx]);
                 source.songs = list.map(function(song){
-                    return MPD.Song(self,song);
+                    return MPD.PlaylistSong(self,song);
                 });
                 return MPD.Playlist(self,source);
             }
@@ -1942,7 +1946,7 @@ MPD.QueueSong = function(client, source){
      * @instance
      */
     me.play = function(){
-        return client.playSongById(me.getId());
+        return client.playById(me.getId());
     };
 
     /**
@@ -1966,6 +1970,42 @@ MPD.QueueSong = function(client, source){
     };
 
     return me;
+}
+
+/**
+ * A song that is on a playlist
+ * exactly like a normal song, but is here to let people override
+ * @class PlaylistSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.PlaylistSong = function(client, source){
+    return MPD.Song(client, source);
+}
+
+/**
+ * A song that is from search results
+ * exactly like a normal song, but is here to let people override
+ * @class SearchSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.SearchSong = function(client, source){
+    return MPD.Song(client, source);
+}
+
+/**
+ * A song that is from manually exploring the library
+ * exactly like a normal song, but is here to let people override
+ * @class FileSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.FileSong = function(client, source){
+    return MPD.Song(client, source);
 }
 
 /**
@@ -2134,6 +2174,22 @@ MPD.Playlist = function(client, source){
      */
     me.getName = function(){
         return source.playlist;
+    }
+
+    /**
+     * load into queue
+     */
+    me.load = function(){
+        client.loadPlaylistIntoQueue(source.playlist);
+    }
+
+    /**
+     * delete this playlist, remove it from the MPD server completely
+     * note this playlist will be invalid after calling this function,
+     * but it will still have a clientside cache of what was in this playlist
+     */
+    me.delete = function(){
+        client.deletePlaylist(source.playlist);
     }
 
     /**
@@ -2318,7 +2374,7 @@ MPD.Queue = function(client, source){
 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a>
-	on Sun Aug 23rd 2015 using the <a
+	on Sun Aug 30th 2015 using the <a
 	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 </span>
 </footer>

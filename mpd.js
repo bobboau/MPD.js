@@ -493,7 +493,7 @@ function MPD(_port){
      * @instance
      * @param {Integer} id - the queue id of the song you want to remove from the queue
      */
-    self.removeSongsFromQueueById = function(id){
+    self.removeSongFromQueueById = function(id){
         issueCommand('deleteid '+id);
     };
 
@@ -664,6 +664,7 @@ function MPD(_port){
     /**
      * return an array of strings which are all of the valid tags
      * note there might be more undocumented tags that you can use just fine not listed here (like musicbrainz)
+     *@todo:use the tagtypes command to fetch these
      * @instance
      * @returns {String[]}
      */
@@ -1534,7 +1535,7 @@ function MPD(_port){
             null,
             function(list){
                 return list.map(function(song){
-                    return MPD.Song(self,song);
+                    return MPD.SearchSong(self,song);
                 });
             }
         );
@@ -1577,7 +1578,7 @@ function MPD(_port){
             function(list){
                 return list.map(function(file){
                     if(typeof file.file !== 'undefined'){
-                        return MPD.Song(self,file);
+                        return MPD.FileSong(self,file);
                     }
                     else{
                         return MPD.Directory(self,file);
@@ -1603,7 +1604,7 @@ function MPD(_port){
             function(list){
                 var source = cloneObject(_private.state.playlists[queue_idx]);
                 source.songs = list.map(function(song){
-                    return MPD.Song(self,song);
+                    return MPD.PlaylistSong(self,song);
                 });
                 return MPD.Playlist(self,source);
             }
@@ -1885,7 +1886,7 @@ MPD.QueueSong = function(client, source){
      * @instance
      */
     me.play = function(){
-        return client.playSongById(me.getId());
+        return client.playById(me.getId());
     };
 
     /**
@@ -1909,6 +1910,42 @@ MPD.QueueSong = function(client, source){
     };
 
     return me;
+}
+
+/**
+ * A song that is on a playlist
+ * exactly like a normal song, but is here to let people override
+ * @class PlaylistSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.PlaylistSong = function(client, source){
+    return MPD.Song(client, source);
+}
+
+/**
+ * A song that is from search results
+ * exactly like a normal song, but is here to let people override
+ * @class SearchSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.SearchSong = function(client, source){
+    return MPD.Song(client, source);
+}
+
+/**
+ * A song that is from manually exploring the library
+ * exactly like a normal song, but is here to let people override
+ * @class FileSong
+ * @augments Song
+ * @param {MPD} client - the MPD client object that owns this
+ * @param {song_metadata} source - raw metadata javascript object that contains the MPD reported data for this song
+ */
+MPD.FileSong = function(client, source){
+    return MPD.Song(client, source);
 }
 
 /**
@@ -2077,6 +2114,22 @@ MPD.Playlist = function(client, source){
      */
     me.getName = function(){
         return source.playlist;
+    }
+
+    /**
+     * load into queue
+     */
+    me.load = function(){
+        client.loadPlaylistIntoQueue(source.playlist);
+    }
+
+    /**
+     * delete this playlist, remove it from the MPD server completely
+     * note this playlist will be invalid after calling this function,
+     * but it will still have a clientside cache of what was in this playlist
+     */
+    me.delete = function(){
+        client.deletePlaylist(source.playlist);
     }
 
     /**
