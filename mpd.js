@@ -151,6 +151,15 @@ function MPD(_port){
     };
 
     /**
+     * ammount of time (in seconds) the MPD server is set to crossfade songs. 0 means disabled
+     * @instance
+     * @returns {Number} true if we are in random mode, false otherwise
+     */
+    self.getCrossfadeTime = function(){
+        return _private.state.crossfade;
+    };
+
+    /**
      * honestly don't know what this is, has something to do with some sort of fading mode I never use, but MPD reports it so I'm making an accessor for it in case someone else wants to use it
      * @instance
      * @returns {Float}
@@ -291,18 +300,11 @@ function MPD(_port){
 
     /**
      * turns on crossfade
+     * @param {String} time -- time to crossfade in seconds, 0 to disable
      * @instance
      */
-    self.enableCrossfade = function(){
-        issueCommand('crossfade 1');
-    };
-
-    /**
-     * turns off crossfade
-     * @instance
-     */
-    self.disableCrossfade = function(){
-        issueCommand('crossfade 0');
+    self.setCrossfade = function(time) {
+        issueCommand('crossfade '+time);
     };
 
     /**
@@ -796,6 +798,7 @@ function MPD(_port){
       * @property {Boolean} single - true if the server is configured to just play one song then quit
       * @property {Boolean} consume - true if the server is configured to not repeat songs in a playlist
       * @property {Boolean} random - true if the server is configured to play music in a random order
+      * @property {Integer} crossfade - nonnegitive integer representing number of seconds to crossfade songs
       * @property {Float} mix_ramp_threshold - not sure what this is, but it's reported
       * actual MPD attribute: mixrampdb
       * @property {Object} current_song - info about the currently playing song
@@ -823,6 +826,7 @@ function MPD(_port){
          single: null,
          consume: null,
          random: null,
+         crossfade: null,
          mix_ramp_threshold: null,
          current_song: {
              queue_idx: null,
@@ -1079,9 +1083,11 @@ function MPD(_port){
         event.mix_ramp_threshold = event.mixrampdb;
         event.playstate = event.state;
         event.queue_version = event.playlist;
+        event.crossfade = (typeof event.xfade === 'undefined')?0:event.xfade;
         delete event.mixrampdb;
         delete event.state;
         delete event.playlist;
+        delete event.xfade;
 
         event.next_song = {
             queue_idx: event.nextsong,
@@ -1719,7 +1725,7 @@ MPD.Song = function(client, source){
       */
      me.getDisplayName = function(){
          if(typeof source.title === 'undefined'){
-            return source.file;
+            return source.file.replace(/^([^\/]*\/)+|\.\w+/g, '');
          }
          return source.title;
      };
