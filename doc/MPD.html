@@ -71,7 +71,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="MPD"><span class="type-signature"></span>new MPD<span class="signature">(<span class="optional">port_number</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="MPD"><span class="type-signature"></span>new MPD<span class="signature">(<span class="optional">_port</span>, <span class="optional">_host</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -106,6 +106,8 @@
 		
 
 		
+		<th>Default</th>
+		
 
 		<th class="last">Description</th>
 	</tr>
@@ -116,7 +118,7 @@
 
         <tr>
             
-                <td class="name"><code>port_number</code></td>
+                <td class="name"><code>_port</code></td>
             
 
             <td class="type">
@@ -141,8 +143,51 @@
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last"><p>the portnumber our client should try to cennect to our winsockifyed MPD instance with</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>_host</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    document.URL
+                
+                </td>
+            
+
+            <td class="description last"><p>hostname to try to connect to, defaults to the domain of the current page</p></td>
         </tr>
 
 	
@@ -187,7 +232,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-15">line 15</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-16">line 16</a>
 			</li>
 		</ul>
 	</dd>
@@ -402,7 +447,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-35">line 35</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-36">line 36</a>
 			</li>
 		</ul>
 	</dd>
@@ -517,7 +562,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-43">line 43</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-44">line 44</a>
 			</li>
 		</ul>
 	</dd>
@@ -628,7 +673,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-60">line 60</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-61">line 61</a>
 			</li>
 		</ul>
 	</dd>
@@ -716,7 +761,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-68">line 68</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-69">line 69</a>
 			</li>
 		</ul>
 	</dd>
@@ -804,7 +849,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-77">line 77</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-78">line 78</a>
 			</li>
 		</ul>
 	</dd>
@@ -845,6 +890,117 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 	<dd>
 		
 <span class="param-type">Integer</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getHost"><span class="type-signature"></span>getHost<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>return the host this client was instansiated with and thet it is (attempting to) connect with</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-87">line 87</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the host name the MPD client is (trying to be) connected to</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">String</span>
 
 
 	</dd>
@@ -915,7 +1071,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-86">line 86</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-96">line 96</a>
 			</li>
 		</ul>
 	</dd>
@@ -1026,7 +1182,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-95">line 95</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-105">line 105</a>
 			</li>
 		</ul>
 	</dd>
@@ -1137,7 +1293,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-104">line 104</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-114">line 114</a>
 			</li>
 		</ul>
 	</dd>
@@ -1250,7 +1406,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-113">line 113</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-123">line 123</a>
 			</li>
 		</ul>
 	</dd>
@@ -1361,7 +1517,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-122">line 122</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-132">line 132</a>
 			</li>
 		</ul>
 	</dd>
@@ -1472,7 +1628,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-131">line 131</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-141">line 141</a>
 			</li>
 		</ul>
 	</dd>
@@ -1583,7 +1739,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-140">line 140</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-150">line 150</a>
 			</li>
 		</ul>
 	</dd>
@@ -1694,7 +1850,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-149">line 149</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-159">line 159</a>
 			</li>
 		</ul>
 	</dd>
@@ -1805,7 +1961,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-158">line 158</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-168">line 168</a>
 			</li>
 		</ul>
 	</dd>
@@ -1916,7 +2072,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-167">line 167</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-177">line 177</a>
 			</li>
 		</ul>
 	</dd>
@@ -2023,7 +2179,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-178">line 178</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-188">line 188</a>
 			</li>
 		</ul>
 	</dd>
@@ -2130,7 +2286,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-186">line 186</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-196">line 196</a>
 			</li>
 		</ul>
 	</dd>
@@ -2237,7 +2393,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-193">line 193</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-203">line 203</a>
 			</li>
 		</ul>
 	</dd>
@@ -2344,7 +2500,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-202">line 202</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-212">line 212</a>
 			</li>
 		</ul>
 	</dd>
@@ -2451,7 +2607,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-213">line 213</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-223">line 223</a>
 			</li>
 		</ul>
 	</dd>
@@ -2558,7 +2714,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-220">line 220</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-230">line 230</a>
 			</li>
 		</ul>
 	</dd>
@@ -2665,7 +2821,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-229">line 229</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-239">line 239</a>
 			</li>
 		</ul>
 	</dd>
@@ -2772,7 +2928,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-239">line 239</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-249">line 249</a>
 			</li>
 		</ul>
 	</dd>
@@ -2879,7 +3035,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-248">line 248</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-258">line 258</a>
 			</li>
 		</ul>
 	</dd>
@@ -3058,7 +3214,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-259">line 259</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-269">line 269</a>
 			</li>
 		</ul>
 	</dd>
@@ -3146,7 +3302,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-277">line 277</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-287">line 287</a>
 			</li>
 		</ul>
 	</dd>
@@ -3253,7 +3409,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-289">line 289</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-299">line 299</a>
 			</li>
 		</ul>
 	</dd>
@@ -3341,7 +3497,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-297">line 297</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-307">line 307</a>
 			</li>
 		</ul>
 	</dd>
@@ -3480,7 +3636,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-306">line 306</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-316">line 316</a>
 			</li>
 		</ul>
 	</dd>
@@ -3568,7 +3724,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-314">line 314</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-324">line 324</a>
 			</li>
 		</ul>
 	</dd>
@@ -3656,7 +3812,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-322">line 322</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-332">line 332</a>
 			</li>
 		</ul>
 	</dd>
@@ -3744,7 +3900,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-330">line 330</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-340">line 340</a>
 			</li>
 		</ul>
 	</dd>
@@ -3832,7 +3988,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-338">line 338</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-348">line 348</a>
 			</li>
 		</ul>
 	</dd>
@@ -3920,7 +4076,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-346">line 346</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-356">line 356</a>
 			</li>
 		</ul>
 	</dd>
@@ -4008,7 +4164,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-354">line 354</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-364">line 364</a>
 			</li>
 		</ul>
 	</dd>
@@ -4145,7 +4301,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-363">line 363</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-373">line 373</a>
 			</li>
 		</ul>
 	</dd>
@@ -4285,7 +4441,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-372">line 372</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-382">line 382</a>
 			</li>
 		</ul>
 	</dd>
@@ -4422,7 +4578,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-381">line 381</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-391">line 391</a>
 			</li>
 		</ul>
 	</dd>
@@ -4579,7 +4735,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-392">line 392</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-402">line 402</a>
 			</li>
 		</ul>
 	</dd>
@@ -4716,7 +4872,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-406">line 406</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-416">line 416</a>
 			</li>
 		</ul>
 	</dd>
@@ -4873,7 +5029,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-415">line 415</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-425">line 425</a>
 			</li>
 		</ul>
 	</dd>
@@ -4961,7 +5117,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-428">line 428</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-438">line 438</a>
 			</li>
 		</ul>
 	</dd>
@@ -5049,7 +5205,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-436">line 436</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-446">line 446</a>
 			</li>
 		</ul>
 	</dd>
@@ -5189,7 +5345,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-445">line 445</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-455">line 455</a>
 			</li>
 		</ul>
 	</dd>
@@ -5277,7 +5433,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-453">line 453</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-463">line 463</a>
 			</li>
 		</ul>
 	</dd>
@@ -5414,7 +5570,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-462">line 462</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-472">line 472</a>
 			</li>
 		</ul>
 	</dd>
@@ -5502,7 +5658,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-470">line 470</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-480">line 480</a>
 			</li>
 		</ul>
 	</dd>
@@ -5639,7 +5795,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-479">line 479</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-489">line 489</a>
 			</li>
 		</ul>
 	</dd>
@@ -5799,7 +5955,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-489">line 489</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-499">line 499</a>
 			</li>
 		</ul>
 	</dd>
@@ -5936,7 +6092,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-498">line 498</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-508">line 508</a>
 			</li>
 		</ul>
 	</dd>
@@ -6096,7 +6252,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-508">line 508</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-518">line 518</a>
 			</li>
 		</ul>
 	</dd>
@@ -6279,7 +6435,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-519">line 519</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-529">line 529</a>
 			</li>
 		</ul>
 	</dd>
@@ -6439,7 +6595,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-529">line 529</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-539">line 539</a>
 			</li>
 		</ul>
 	</dd>
@@ -6527,7 +6683,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-537">line 537</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-547">line 547</a>
 			</li>
 		</ul>
 	</dd>
@@ -6687,7 +6843,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-547">line 547</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-557">line 557</a>
 			</li>
 		</ul>
 	</dd>
@@ -6847,7 +7003,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-557">line 557</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-567">line 567</a>
 			</li>
 		</ul>
 	</dd>
@@ -6984,7 +7140,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-566">line 566</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-576">line 576</a>
 			</li>
 		</ul>
 	</dd>
@@ -7121,7 +7277,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-575">line 575</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-585">line 585</a>
 			</li>
 		</ul>
 	</dd>
@@ -7258,7 +7414,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-585">line 585</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-595">line 595</a>
 			</li>
 		</ul>
 	</dd>
@@ -7418,7 +7574,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-595">line 595</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-605">line 605</a>
 			</li>
 		</ul>
 	</dd>
@@ -7555,7 +7711,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-604">line 604</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-614">line 614</a>
 			</li>
 		</ul>
 	</dd>
@@ -7715,7 +7871,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-614">line 614</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-624">line 624</a>
 			</li>
 		</ul>
 	</dd>
@@ -7898,7 +8054,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-625">line 625</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-635">line 635</a>
 			</li>
 		</ul>
 	</dd>
@@ -8058,7 +8214,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-635">line 635</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-645">line 645</a>
 			</li>
 		</ul>
 	</dd>
@@ -8195,7 +8351,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-644">line 644</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-654">line 654</a>
 			</li>
 		</ul>
 	</dd>
@@ -8283,7 +8439,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-652">line 652</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-662">line 662</a>
 			</li>
 		</ul>
 	</dd>
@@ -8459,7 +8615,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-661">line 661</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-671">line 671</a>
 			</li>
 		</ul>
 	</dd>
@@ -8547,7 +8703,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-673">line 673</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-683">line 683</a>
 			</li>
 		</ul>
 	</dd>
@@ -8726,7 +8882,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-694">line 694</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-704">line 704</a>
 			</li>
 		</ul>
 	</dd>
@@ -8899,7 +9055,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-710">line 710</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-720">line 720</a>
 			</li>
 		</ul>
 	</dd>
@@ -9059,7 +9215,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 		<ul class="dummy">
 			<li>
 				<a href="-_home_bobboau_mpd.js_mpd.js.html">/home/bobboau/mpd.js/mpd.js</a>,
-				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-727">line 727</a>
+				 <a href="-_home_bobboau_mpd.js_mpd.js.html#sunlight-1-line-737">line 737</a>
 			</li>
 		</ul>
 	</dd>
@@ -9121,7 +9277,7 @@ mpd_client.on(&#x27;StateChanged&#x27;, updateUiFunction);</pre>
 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a>
-	on Sun Aug 30th 2015 using the <a
+	on Mon Aug 31st 2015 using the <a
 	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 </span>
 </footer>
