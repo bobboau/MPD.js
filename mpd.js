@@ -2516,7 +2516,7 @@ MPD.Output = function(client, source){
  * called when an output of the player has changed (enabled/disabled).
  * @event OutputChanged
  * @type {Object}
- * @callback OutputChangedEventHandler
+ * @callback outputChangedEventHandler
  * @param {Output[]} outputs - state object, the same as is returned by getState
  * @param {MPD} client - the client that this event happened on
  */
