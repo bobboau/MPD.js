@@ -35,4 +35,4 @@ This will provide you with the needed interface to control your MPD server. It w
         stateChanged(state);
     });
 
-MPD.js will provide you with an object representing the server's state. You might find it easier to use the MPD.js client object directly, as it has a number of methods for simplifying the task of getting data (for instance mpd_client.getCurrentSong() is equivilent to state.current_queue[stat.current_song.queue_idx]) and some like getCurrentSongTime are the only practical way to get some information.
+MPD.js will provide you with an object representing the server's state. You might find it easier to use the MPD.js client object directly, as it has a number of methods for simplifying the task of getting data (for instance mpd_client.getCurrentSong() is equivalent to state.current_queue[stat.current_song.queue_idx]) and some like getCurrentSongTime are the only practical way to get some information.
