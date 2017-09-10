@@ -2716,6 +2716,7 @@ MPD.Output = function(client, source){
  * Lists all songs and directories in path (blank string for root). also returns song file metadata info
  * @callback directoryContentsCallback
  * @param {directory[]} [directory_contents] - the contents of the directory, will be an array of objects representing director(y|ies) and/or song(s) interleived
+ */
 /**
  * is given search results when the search is complete
  * @callback searchResultsCallback
