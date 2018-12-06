@@ -186,6 +186,14 @@ function MPD(_port, _host, _password){
     self.getCurrentSong = getCurrentSong;
 
     /**
+     * gets the length of the current song
+     * @instance
+     * @function
+     * @returns {Float}
+     */
+    self.getCurrentSongDuration = getCurrentSongDuration;
+
+    /**
      * gets the time of the current song. will calculate it based on the reported time, and how long it's been since that happened
      * @instance
      * @function
@@ -775,6 +783,24 @@ function MPD(_port, _host, _password){
          });
      };
 
+     /**
+     * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called$
+     * @instance
+     * @param {Object[]} params - Array of objects that maps a tag to a value that you want to find matches on that tag for {tag<string> => va$
+     * @param {searchResultsCallback} onDone - function called when the search results have come back, is passed the results as it's only para$
+     */
+    self.find = function(params, onDone){
+         var query = 'find';
+         for(key in params){
+             var value = params[key];
+             query += ' '+key+' "'+value+'"';
+         }
+         issueCommands({
+             command:query,
+             handler:getSearchHandler(onDone)
+         });
+     };
+
     /**
      * like search except just for finding how many results you'll get (for faster live updates while criteria are edited)
      * params is a {tag<string> => value<string>} object, valid tags are enumerated in getTagTypes, onDone is a function that should be called on complete, will be passed the numver of results the search would produce
@@ -887,7 +913,9 @@ function MPD(_port, _host, _password){
       * @property {Integer} current_song.queue_idx - which song in the current playlist is active
       * actual MPD attribute: song
       * @property {Float} current_song.elapsed_time - time into the currently playing song in seconds
-      * actual MPD attribute: elapsed
+      * actual MPD attribute: elapsed (MPD >= 0.16) or time (MPD <= 0.15)
+      * @property {Integer} current_song.duration - song duration in seconds
+      * actual MPD attribute: duration (MPD >= 0.20) or time (MPD <= 0.19)
       * @property {Integer} current_song.id - the id of the current song
       * actual MPD attribute: songid
       * @property {Object} next_song - info about the song next to play on the queue
@@ -913,6 +941,7 @@ function MPD(_port, _host, _password){
          current_song: {
              queue_idx: null,
              elapsed_time: null,
+             duration: null,
               id: null
          },
 
@@ -1077,7 +1106,7 @@ function MPD(_port, _host, _password){
     function init(){
       var websocket_url = getAppropriateWsUrl();
       var websocket = new Websock();
-      websocket.open(websocket_url);
+      websocket.open(websocket_url, ['binary', 'base64']);
 
       //these can throw
       websocket.on('open',onConnect);
@@ -1279,7 +1308,7 @@ function MPD(_port, _host, _password){
 
 
     /*************************************\
-    |* process responces from the server *|
+    |* process responses from the server *|
     \*************************************/
 
 
@@ -1533,16 +1562,23 @@ function MPD(_port, _host, _password){
             }
             state[key] = value;
         });
-
+        if (!'elapsed' in state && 'time' in state && state.time){
+            state.elapsed = state.time.substr(0,state.time.indexOf(':')) - 0;
+        }
+        if (!'duration' in state && 'time' in state && state.time){
+            state.duration = state.time.substr(state.time.indexOf(':') + 1) - 0;
+        }
         //normalize some of the state properties because I don't like them the way they are
         //because of course I know better than the MPD maintainers what things should be called and the ranges things should be in
         state.current_song = {
             queue_idx: state.song,
             elapsed_time: state.elapsed,
+            duration: state.duration,
             id: state.songid
         };
         delete state.song;
         delete state.elapsed;
+        delete state.duration;
         delete state.songid;
 
         state.mix_ramp_threshold = state.mixrampdb;
@@ -1985,7 +2021,14 @@ function MPD(_port, _host, _password){
     /******************\
     |* public methods *|
     \******************/
-
+    
+    /**
+     * get the current song length
+     * @private
+     */
+     function getCurrentSongDuration(){
+        return _private.state.current_song.duration;
+     }
 
     /**
      * get the current play time
@@ -2004,10 +2047,13 @@ function MPD(_port, _host, _password){
             offset = (now.getTime() - _private.last_status_update_time.getTime())/1000;
         }
 
+        var duration = _private.state.current_song.duration;
         var last_time = _private.state.current_song.elapsed_time;
         last_time = last_time?last_time:0;
 
-        return Math.min(last_time + offset, current_song.getDuration());
+    	var res = Math.min(last_time + offset, duration);
+        console.log('MPD.getCurrentSongTime, ' + res)
+        return res;
     }
 
 
@@ -2159,6 +2205,17 @@ MPD.Song = function(client, source){
          return source.artist;
      };
 
+    /**
+      * get the song's album artist. Can be different from song artist
+      * @instance
+      * @returns {String} from the song metadata
+      */
+     me.getAlbumArtist = function(){
+         //console.log('getAlbumArtist(): ' + JSON.stringify(source))
+         return source.albumartist;
+     };
+
+
      /**
       * get the song's title
       * @instance
@@ -2175,6 +2232,10 @@ MPD.Song = function(client, source){
       */
      me.getAlbum = function(){
          return source.album;
+     };
+
+     me.getFile = function(){
+         return source.file;
      };
 
      /**
